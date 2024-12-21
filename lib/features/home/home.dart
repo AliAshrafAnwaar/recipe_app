@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
             child: Column(
               children: [
                 appBarRow(context),
-                profilePostRow(),
+                profilePostRow(context),
                 RecipeCard(),
                 RecipeCard(),
                 RecipeCard(),
@@ -75,17 +75,23 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget profilePostRow() {
+  Widget profilePostRow(BuildContext context) {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
           child: Row(
             children: [
-              CircleAvatar(
-                backgroundColor: AppColors.primaryColor.withOpacity(0.5),
-                radius: 20,
-                backgroundImage: Image.asset('assets/images/profile.jpg').image,
+              InkWell(
+                onTap: () {
+                  GoRouter.of(context).push(AppRouter.profileScreen);
+                },
+                child: CircleAvatar(
+                  backgroundColor: AppColors.primaryColor.withOpacity(0.5),
+                  radius: 20,
+                  backgroundImage:
+                      Image.asset('assets/images/profile.jpg').image,
+                ),
               ),
               const SizedBox(width: 10),
               const CreateRecipeContainer(),

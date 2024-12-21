@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe_app/features/auth/splash/splash.dart';
 import 'package:recipe_app/features/home/home.dart';
 import 'package:recipe_app/features/home/menu.dart';
+import 'package:recipe_app/features/home/recipe_details.dart';
+import 'package:recipe_app/features/profile/profile_screen.dart';
+import 'package:recipe_app/features/recipe_create/recipe_create.dart';
 
 class AppRouter {
   static const splash = "/splash";
@@ -11,11 +14,12 @@ class AppRouter {
   static const login = "/login";
   static const forgetPassword = "/forgetPassword";
   static const homeScreen = "/home";
-  static const jobApplyScreen = "/jobApplyScreen";
+  static const menuScreen = "/menu";
+  static const recipeDetails = "/recipeDetails";
+  static const recipeCreate = "/recipeCreate";
   static const jobPostScreen = "/jobPostScreen";
   static const profileScreen = "/profileScreen";
   static const resumeUploadScreen = "/resumeUploadScreen";
-  static const menuScreen = "/settingsScreen";
   static const applicationsScreen = "/applicationsScreen";
   static const allApplicantsScreen = "/allApplicantsScreen";
   static const myPostedJob = "/myPostedJob";
@@ -126,12 +130,11 @@ class AppRouter {
       //     );
       //   },
       // ),
-      // GoRoute(
-      //   path: jobApplyScreen,
-      //   name: jobApplyScreen,
-      //   builder: (context, state) =>
-      //       JobApplyScreen(job: state.extra as PostedJob),
-      // ),
+      GoRoute(
+        path: recipeCreate,
+        name: recipeCreate,
+        builder: (context, state) => const RecipeCreate(),
+      ),
 
       // GoRoute(
       //   path: successScreen,
@@ -165,14 +168,10 @@ class AppRouter {
       //       AllApplicantsScreen(jobId: state.extra as String),
       // ),
       // //bodaSayed
-      // GoRoute(
-      //   path: profileScreen,
-      //   name: profileScreen,
-      //   builder: (context, state) => BlocProvider.value(
-      //     value: profileCubit,
-      //     child: ProfileScreen(),
-      //   ),
-      // ),
+      GoRoute(
+          path: profileScreen,
+          name: profileScreen,
+          builder: (context, state) => ProfileScreen()),
       // GoRoute(
       //     path: resumeUploadScreen,
       //     name: resumeUploadScreen,
@@ -184,14 +183,10 @@ class AppRouter {
           path: menuScreen,
           name: menuScreen,
           builder: (context, state) => const Menu()),
-      // GoRoute(
-      //   path: applicationsScreen,
-      //   name: applicationsScreen,
-      //   builder: (context, state) => BlocProvider.value(
-      //     value: profileCubit,
-      //     child: ApplicationsScreen(),
-      //   ),
-      // ),
+      GoRoute(
+          path: recipeDetails,
+          name: recipeDetails,
+          builder: (context, state) => const RecipeDetails()),
       // //end bodaSayed
     ],
   );

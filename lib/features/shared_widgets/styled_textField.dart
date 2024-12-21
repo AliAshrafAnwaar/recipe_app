@@ -7,24 +7,31 @@ class StyledTextField extends StatefulWidget {
       required this.icon,
       this.isPassword,
       this.controller,
+      this.timeCheck,
+      this.readonly,
       this.password,
+      this.isWhite,
+      this.isNotifier,
       super.key});
 
+  final bool? readonly;
   final String hint;
   final IconData icon;
   final bool? isPassword;
+  final bool? isNotifier;
   final TextEditingController? controller;
   final TextEditingController? password;
+  final bool? timeCheck;
+  final bool? isWhite;
 
   @override
-  State<StyledTextField> createState() => _StyledTextFieldState();
+  State<StyledTextField> createState() => _StyledTextfieldState();
 }
 
-class _StyledTextFieldState extends State<StyledTextField> {
+class _StyledTextfieldState extends State<StyledTextField> {
   bool? isPasswordChecker;
 
   final _formKey = GlobalKey<FormState>();
-
   void validation() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context);
@@ -32,70 +39,77 @@ class _StyledTextFieldState extends State<StyledTextField> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     isPasswordChecker =
         isPasswordChecker ?? (widget.isPassword == true ? true : false);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return TextFormField(
-      style: Theme.of(context).textTheme.headlineMedium,
+      onChanged: (widget.isNotifier == true) ? (e) {} : null,
+      cursorColor: (widget.isWhite == true) ? Colors.white : null,
+      style: (widget.isWhite == true)
+          ? TextStyle(color: Colors.white)
+          : Theme.of(context).textTheme.bodyMedium,
       controller: widget.controller,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter ${widget.hint}';
-        } else if (value.length < 3 && widget.hint == "Full Name") {
-          return 'Please enter at least 3 in ${widget.hint}';
-        } else if (widget.hint == "E-mail" &&
-            !value.toLowerCase().contains('.com')) {
-          return "Invalid Email";
-        } else if (widget.hint == "Password" && value.length < 8) {
-          return "${widget.hint} must be at least 8 digits";
-        } else if (widget.hint == "Confirm Password" &&
-            widget.password?.text != value) {
-          return ("Doesn't match");
+          return 'برجاء ادخال ${widget.hint}';
+        } else if (value.length < 3 && widget.hint == "الاسم") {
+          return 'برجاء ادخال علي الاقل 3 في ${widget.hint}';
+        } else if (value.length != 11 && widget.hint == "رقم الهاتف") {
+          return '${widget.hint} غير صحيح ';
+        } else if (value.contains("+") && widget.hint == "رقم الهاتف") {
+          return '${widget.hint} يبدأ ب 01';
         }
         return null;
       },
+      readOnly: widget.readonly ?? false,
       obscureText: isPasswordChecker!,
       decoration: InputDecoration(
-        //Hint text
+        isDense: (widget.isWhite == true) ? true : false,
         hintText: widget.hint,
-
-        //apply padding
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-
-        //text coloring
-        labelStyle: Theme.of(context).textTheme.headlineMedium,
-        hintStyle: Theme.of(context).textTheme.bodySmall,
-        errorStyle: Theme.of(context).textTheme.bodyLarge,
-
-        // left side Icon
+        contentPadding: (widget.isWhite == true)
+            ? EdgeInsets.all(0)
+            : const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+        labelStyle: (widget.isWhite == true)
+            ? TextStyle(color: Colors.white)
+            : Theme.of(context).textTheme.headlineMedium,
+        hintStyle: (widget.isWhite == true)
+            ? TextStyle(color: Colors.white.withOpacity(0.5))
+            : Theme.of(context).textTheme.bodySmall,
+        errorStyle: const TextStyle(color: Colors.red),
         prefixIcon: Icon(
           widget.icon,
-          color: AppColors.hintColor,
+          color: (widget.isWhite == true) ? Colors.white : AppColors.hintColor,
           size: 20,
         ),
-
-        //enable border
-
         enabledBorder: OutlineInputBorder(
+          gapPadding: 0,
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: const BorderSide(
-            color: AppColors.hintColor,
+          borderSide: BorderSide(
+            color:
+                (widget.isWhite == true) ? Colors.white : AppColors.hintColor,
             width: 1,
           ),
         ),
         border: OutlineInputBorder(
+          gapPadding: 0,
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: const BorderSide(
-            color: AppColors.hintColor,
+          borderSide: BorderSide(
+            color:
+                (widget.isWhite == true) ? Colors.white : AppColors.hintColor,
           ),
         ),
-        focusColor: AppColors.primaryText,
+        focusColor:
+            (widget.isWhite == true) ? Colors.white : AppColors.primaryText,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
-          borderSide: const BorderSide(
-            color: AppColors.primaryText,
+          borderSide: BorderSide(
+            color:
+                (widget.isWhite == true) ? Colors.white : AppColors.primaryText,
             width: 1,
           ),
         ),
@@ -113,12 +127,13 @@ class _StyledTextFieldState extends State<StyledTextField> {
             width: 1,
           ),
         ),
-        //password right side Icon
         suffixIcon: widget.isPassword == true
             ? IconButton(
                 icon: Icon(
                   isPasswordChecker! ? Icons.visibility : Icons.visibility_off,
-                  color: AppColors.hintColor,
+                  color: (widget.isWhite == true)
+                      ? Colors.white
+                      : AppColors.hintColor,
                   size: 20,
                 ),
                 onPressed: () {

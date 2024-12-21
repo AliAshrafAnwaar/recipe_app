@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
+import 'package:recipe_app/core/utils/app_router.dart';
 import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
 
@@ -53,9 +55,20 @@ class RecipeCard extends StatelessWidget {
                     children: [
                       Text(
                         'Recipe Name',
-                        style: AppTextStyles.secondaryTextStyle,
+                        style: TextStyle(),
                       ),
-                      TextButton(onPressed: () {}, child: Text('...See more'))
+                      const SizedBox(
+                        width: 1,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          GoRouter.of(context).push(AppRouter.recipeDetails);
+                        },
+                        child: Text(
+                          '...See more',
+                          style: AppTextStyles.secondaryTextStyle,
+                        ),
+                      )
                     ],
                   ),
                 ],

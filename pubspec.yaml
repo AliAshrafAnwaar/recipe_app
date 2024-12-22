@@ -41,6 +41,9 @@ dependencies:
   firebase_core: ^3.9.0
   firebase_auth: ^5.3.4
   cloud_firestore: ^5.6.0
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+  firebase_storage: ^12.3.7
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +55,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  riverpod_generator: ^2.6.3
+  build_runner: ^2.4.13
+  custom_lint: ^0.7.0
+  riverpod_lint: ^2.6.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

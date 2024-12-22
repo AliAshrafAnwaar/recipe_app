@@ -9,7 +9,7 @@ class MainRepo {
   final FirestoreRepo _firestoreRepo = FirestoreRepo();
 
   // Sign up with email and password, then create a Firestore document for the user
-  Future<User?> signUp(
+  Future<UserModel?> signUp(
       String email, String password, String displayName) async {
     User? user = await _authRepo.signUp(email, password, displayName);
     if (user != null) {
@@ -22,8 +22,10 @@ class MainRepo {
         recipes: {},
       );
       await _firestoreRepo.addUser('users', userModel.toMap());
+
+      return userModel;
     }
-    return user;
+    return null;
   }
 
   // Sign in with email and password, then retrieve the Firestore document for the user
@@ -32,7 +34,6 @@ class MainRepo {
     if (user != null) {
       DocumentSnapshot userDoc =
           await _firestoreRepo.getUser('users', user.uid);
-      print(userDoc.data());
       final UserModel userModel =
           UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
       return userModel;

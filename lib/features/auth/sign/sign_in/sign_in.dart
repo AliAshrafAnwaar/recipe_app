@@ -1,5 +1,6 @@
 //signup
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/app_router.dart';
@@ -10,18 +11,18 @@ import 'package:recipe_app/features/auth/sign/sign_up/widgets/text_between_divid
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/welcome_text.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';
 import 'package:recipe_app/features/shared_widgets/styled_textField.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
   //Key for validation
   final _formKey = GlobalKey<FormState>();
-  final _repo = MainRepo();
 
   // Create controllers for the TextFields
   final TextEditingController _emailController = TextEditingController();
@@ -75,10 +76,20 @@ class _SignInScreenState extends State<SignInScreen> {
                   StyledButton(
                       onPressed: () async {
                         if (registerCheck()) {
-                          await _repo.signIn(
-                              _emailController.text, _passwordController.text);
-
-                          GoRouter.of(context).push(AppRouter.homeScreen);
+                          ref
+                              .read(userProviderProvider.notifier)
+                              .signIn(_emailController.text,
+                                  _passwordController.text)
+                              .then((value) {
+                            if (value) {
+                              GoRouter.of(context).push(AppRouter.homeScreen);
+                            }
+                          }, onError: (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        "Invalid email or password, please try again")));
+                          });
                         }
                       },
                       text: "Log in"),

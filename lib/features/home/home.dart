@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/app_router.dart';
 import 'package:recipe_app/core/utils/styles.dart';
+import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/widgets/create_recipe_container.dart';
 import 'package:recipe_app/features/home/widgets/recipe_card.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
-class Home extends StatelessWidget {
+class Home extends ConsumerWidget {
   const Home({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    UserModel? user = ref.watch(userProviderProvider);
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -20,7 +24,7 @@ class Home extends StatelessWidget {
             child: Column(
               children: [
                 appBarRow(context),
-                profilePostRow(context),
+                profilePostRow(context, user!),
                 RecipeCard(),
                 RecipeCard(),
                 RecipeCard(),
@@ -76,7 +80,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget profilePostRow(BuildContext context) {
+  Widget profilePostRow(BuildContext context, UserModel user) {
     return Column(
       children: [
         Padding(
@@ -90,8 +94,7 @@ class Home extends StatelessWidget {
                 child: CircleAvatar(
                   backgroundColor: AppColors.primaryColor.withOpacity(0.5),
                   radius: 20,
-                  backgroundImage:
-                      Image.asset('assets/images/profile.jpg').image,
+                  backgroundImage: Image.network(user.image).image,
                 ),
               ),
               const SizedBox(width: 10),

@@ -1,11 +1,7 @@
 //signup
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/data/repo/main_repo.dart';
-import 'package:recipe_app/data/services/auth_services.dart/auth_services.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/google_facebook_sign.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/styled_text_navigation_to_from_signin.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/terms.dart';

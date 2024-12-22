@@ -18,6 +18,7 @@ class MainRepo {
         email: user.email ?? '',
         username: user.displayName ?? '',
         phoneNumber: '',
+        image: '',
         recipes: {},
       );
       await _firestoreRepo.addUser('users', userModel.toMap());
@@ -26,12 +27,15 @@ class MainRepo {
   }
 
   // Sign in with email and password, then retrieve the Firestore document for the user
-  Future<Map<String, dynamic>?> signIn(String email, String password) async {
+  Future<UserModel?> signIn(String email, String password) async {
     User? user = await _authRepo.signIn(email, password);
     if (user != null) {
       DocumentSnapshot userDoc =
           await _firestoreRepo.getUser('users', user.uid);
-      return userDoc.data() as Map<String, dynamic>?;
+      print(userDoc.data());
+      final UserModel userModel =
+          UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+      return userModel;
     }
     return null;
   }

@@ -3,6 +3,7 @@ import 'package:recipe_app/data/model/recipe_model.dart';
 class UserModel {
   final String userID;
   final String username;
+  final String image;
   final String phoneNumber;
   final String email;
   final Set<RecipeModel> recipes;
@@ -10,6 +11,7 @@ class UserModel {
   UserModel({
     required this.userID,
     required this.username,
+    required this.image,
     required this.phoneNumber,
     required this.email,
     required this.recipes,
@@ -21,6 +23,7 @@ class UserModel {
       'userID': userID,
       'username': username,
       'phoneNumber': phoneNumber,
+      'image': image,
       'email': email,
       'recipes': recipes.map((recipe) => recipe.toMap()).toList(),
     };
@@ -32,6 +35,7 @@ class UserModel {
       userID: map['userID'],
       username: map['username'],
       phoneNumber: map['phoneNumber'],
+      image: map['image'],
       email: map['email'],
       recipes: (map['recipes'] as List)
           .map((recipe) => RecipeModel.fromMap(recipe))
@@ -44,6 +48,7 @@ class UserModel {
     String? userID,
     String? username,
     String? phoneNumber,
+    String? image,
     String? email,
     Set<RecipeModel>? recipes,
   }) {
@@ -51,6 +56,7 @@ class UserModel {
       userID: userID ?? this.userID,
       username: username ?? this.username,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      image: image ?? this.image,
       email: email ?? this.email,
       recipes: recipes ?? this.recipes,
     );

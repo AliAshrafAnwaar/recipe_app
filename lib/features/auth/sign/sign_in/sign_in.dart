@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/app_router.dart';
+import 'package:recipe_app/data/repo/main_repo.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/google_facebook_sign.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/styled_text_navigation_to_from_signin.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/text_between_divider.dart';
@@ -20,6 +21,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   //Key for validation
   final _formKey = GlobalKey<FormState>();
+  final _repo = MainRepo();
 
   // Create controllers for the TextFields
   final TextEditingController _emailController = TextEditingController();
@@ -71,10 +73,13 @@ class _SignInScreenState extends State<SignInScreen> {
 
                   // cubit builder
                   StyledButton(
-                      onPressed: () {
-                        GoRouter.of(context)
-                            .pushReplacement(AppRouter.homeScreen);
-                        registerCheck();
+                      onPressed: () async {
+                        if (registerCheck()) {
+                          await _repo.signIn(
+                              _emailController.text, _passwordController.text);
+
+                          GoRouter.of(context).push(AppRouter.homeScreen);
+                        }
                       },
                       text: "Log in"),
 

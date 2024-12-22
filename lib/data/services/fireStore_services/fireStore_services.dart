@@ -6,7 +6,7 @@ class FireStoreService {
   // Add a document to a collection
   Future<void> addUser(String collectionPath, Map<String, dynamic> data) async {
     try {
-      await _firestore.collection(collectionPath).doc(data['id']).set(data);
+      await _firestore.collection(collectionPath).doc(data['userID']).set(data);
     } catch (e) {
       print('Error adding document: $e');
     }

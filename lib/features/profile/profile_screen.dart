@@ -30,7 +30,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.secondaryText,
       appBar: AppBar(
+        backgroundColor: AppColors.secondaryText,
         elevation: 0,
         title: Text(
           'Profile',

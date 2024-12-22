@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1077707455511",
+    "firebase_url": "https://fire-auth-1cb50-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "fire-auth-1cb50",
+    "storage_bucket": "fire-auth-1cb50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077707455511:android:79e6ef8c6d16b246983052",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzXM0n2LYWltglaGwCuPc4qQmXQXefk-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077707455511:android:98622a571c1a2aed983052",
+        "android_client_info": {
+          "package_name": "com.example.recipe_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzXM0n2LYWltglaGwCuPc4qQmXQXefk-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077707455511:android:ed48e5963ff153f6983052",
+        "android_client_info": {
+          "package_name": "com.wrteam.egrocer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzXM0n2LYWltglaGwCuPc4qQmXQXefk-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

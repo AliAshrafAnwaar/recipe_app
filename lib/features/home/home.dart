@@ -15,6 +15,7 @@ class Home extends StatelessWidget {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: AppColors.secondaryText,
           body: SingleChildScrollView(
             child: Column(
               children: [

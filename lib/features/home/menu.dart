@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_app/core/constants/app_colors.dart';
+import 'package:recipe_app/core/utils/styles.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -6,67 +8,72 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: AppColors.secondaryText,
       appBar: AppBar(
-        backgroundColor: Colors.grey[200],
-        title: const Text('Menu'),
+        backgroundColor: AppColors.secondaryText,
+        title: Text(
+          'Menu',
+          style: AppTextStyles.primaryTextStyle,
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            userContainer(),
-            Row(
-              children: [
-                Flexible(
-                  child: menuItem(
-                    title: 'Favorites',
-                    icon: Icons.favorite,
-                    onTap: () {},
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              userContainer(),
+              Row(
+                children: [
+                  Flexible(
+                    child: menuItem(
+                      title: 'Favorites',
+                      icon: Icons.favorite,
+                      onTap: () {},
+                    ),
                   ),
-                ),
-                Flexible(
-                  child: menuItem(
-                    title: 'My listings',
-                    icon: Icons.list,
-                    onTap: () {},
+                  Flexible(
+                    child: menuItem(
+                      title: 'My listings',
+                      icon: Icons.list,
+                      onTap: () {},
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Flexible(
-                  child: menuItem(
-                    title: 'Edit Profile',
-                    icon: Icons.edit,
-                    onTap: () {},
+                ],
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    child: menuItem(
+                      title: 'Edit Profile',
+                      icon: Icons.edit,
+                      onTap: () {},
+                    ),
                   ),
-                ),
-                const Expanded(
-                  child: SizedBox(),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            settingsItem(
-              icon: Icons.settings,
-              title: 'Settings & privacy',
-              onTap: () {},
-            ),
-            settingsItem(
-              icon: Icons.help,
-              title: 'Help and support',
-              onTap: () {},
-            ),
-            settingsItem(
-              icon: Icons.logout,
-              title: 'Logout',
-              onTap: () {},
-            ),
-          ],
+                  const Expanded(
+                    child: SizedBox(),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
+              settingsItem(
+                icon: Icons.settings,
+                title: 'Settings & privacy',
+                onTap: () {},
+              ),
+              settingsItem(
+                icon: Icons.help,
+                title: 'Help and support',
+                onTap: () {},
+              ),
+              settingsItem(
+                icon: Icons.logout,
+                title: 'Logout',
+                onTap: () {},
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_app/features/auth/sign/forget_password.dart/forget_password.dart';
+import 'package:recipe_app/features/auth/sign/sign_in/sign_in.dart';
+import 'package:recipe_app/features/auth/sign/sign_up/signup.dart';
 import 'package:recipe_app/features/auth/splash/splash.dart';
 import 'package:recipe_app/features/home/home.dart';
 import 'package:recipe_app/features/home/menu.dart';
 import 'package:recipe_app/features/home/recipe_details.dart';
 import 'package:recipe_app/features/profile/profile_screen.dart';
-import 'package:recipe_app/features/recipe_create/recipe_create.dart';
+import 'package:recipe_app/features/create_recipe/create_recipe.dart';
 
 class AppRouter {
   static const splash = "/splash";
   static const onBoardingScreens = "/onBoardingScreens";
   static const signUp = "/signUp";
-  static const login = "/login";
+  static const signIn = "/signIn";
   static const forgetPassword = "/forgetPassword";
   static const homeScreen = "/home";
   static const menuScreen = "/menu";
@@ -53,33 +56,33 @@ class AppRouter {
       //   path: onBoardingScreens,
       //   builder: (context, state) => const OnBoardingScreen1(),
       // ),
-      // GoRoute(
-      //   path: signUp,
-      //   name: signUp,
-      //   pageBuilder: (context, state) => CustomTransitionPage(
-      //     key: state.pageKey,
-      //     child: const SignUpScreen(),
-      //     transitionsBuilder: _fadeTransition, // Slide transition
-      //   ),
-      // ),
-      // GoRoute(
-      //   path: login,
-      //   name: login,
-      //   pageBuilder: (context, state) => CustomTransitionPage(
-      //     key: state.pageKey,
-      //     child: const LoginScreen(),
-      //     transitionsBuilder: _fadeTransition,
-      //   ),
-      // ),
-      // GoRoute(
-      //   path: forgetPassword,
-      //   name: forgetPassword,
-      //   pageBuilder: (context, state) => CustomTransitionPage(
-      //     key: state.pageKey,
-      //     child: const ForgetPasswordScreen(),
-      //     transitionsBuilder: _slideTransition, // Slide transition
-      //   ),
-      // ),
+      GoRoute(
+        path: signUp,
+        name: signUp,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const SignUpScreen(),
+          transitionsBuilder: _fadeTransition, // Slide transition
+        ),
+      ),
+      GoRoute(
+        path: signIn,
+        name: signIn,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const SignInScreen(),
+          transitionsBuilder: _fadeTransition,
+        ),
+      ),
+      GoRoute(
+        path: forgetPassword,
+        name: forgetPassword,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const ForgetPasswordScreen(),
+          transitionsBuilder: _slideTransition, // Slide transition
+        ),
+      ),
       GoRoute(
         path: homeScreen,
         name: homeScreen,
@@ -133,7 +136,7 @@ class AppRouter {
       GoRoute(
         path: recipeCreate,
         name: recipeCreate,
-        builder: (context, state) => const RecipeCreate(),
+        builder: (context, state) => const CreateRecipe(),
       ),
 
       // GoRoute(

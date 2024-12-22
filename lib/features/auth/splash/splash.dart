@@ -24,10 +24,10 @@ class _SplashState extends State<Splash> {
       String? userToken;
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       if (userToken != null) {
-        GoRouter.of(context).pushReplacementNamed(AppRouter.homeScreen);
+        GoRouter.of(context).pushReplacementNamed(AppRouter.signUp);
       } else {
         if (mounted) {
-          GoRouter.of(context).pushReplacementNamed(AppRouter.homeScreen);
+          GoRouter.of(context).pushReplacementNamed(AppRouter.signUp);
         }
       }
     });

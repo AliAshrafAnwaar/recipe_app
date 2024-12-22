@@ -15,6 +15,7 @@ class RecipeCard extends StatelessWidget {
         maxWidth: 500,
       ),
       child: Card(
+        color: AppColors.secondaryText,
         shadowColor: AppColors.mainColor.withOpacity(0.5),
         shape: const RoundedRectangleBorder(),
         elevation: 5,

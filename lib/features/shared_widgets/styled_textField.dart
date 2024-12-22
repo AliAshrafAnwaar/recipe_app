@@ -12,6 +12,7 @@ class StyledTextField extends StatefulWidget {
       this.password,
       this.isWhite,
       this.isNotifier,
+      this.maxLines,
       super.key});
 
   final bool? readonly;
@@ -23,6 +24,7 @@ class StyledTextField extends StatefulWidget {
   final TextEditingController? password;
   final bool? timeCheck;
   final bool? isWhite;
+  final int? maxLines;
 
   @override
   State<StyledTextField> createState() => _StyledTextfieldState();
@@ -48,6 +50,7 @@ class _StyledTextfieldState extends State<StyledTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: (widget.maxLines != null) ? widget.maxLines : 1,
       onChanged: (widget.isNotifier == true) ? (e) {} : null,
       cursorColor: (widget.isWhite == true) ? Colors.white : null,
       style: (widget.isWhite == true)
@@ -56,13 +59,13 @@ class _StyledTextfieldState extends State<StyledTextField> {
       controller: widget.controller,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'برجاء ادخال ${widget.hint}';
-        } else if (value.length < 3 && widget.hint == "الاسم") {
-          return 'برجاء ادخال علي الاقل 3 في ${widget.hint}';
-        } else if (value.length != 11 && widget.hint == "رقم الهاتف") {
-          return '${widget.hint} غير صحيح ';
-        } else if (value.contains("+") && widget.hint == "رقم الهاتف") {
-          return '${widget.hint} يبدأ ب 01';
+          return 'Please enter ${widget.hint}';
+        } else if (value.length < 3 && widget.hint == "username") {
+          return 'please enter at least ${widget.hint}';
+        } else if (value.length != 11 && widget.hint == "phoneNumber") {
+          return '${widget.hint} not correct ';
+        } else if (value.contains("+") && widget.hint == "phoneNumber") {
+          return '${widget.hint} should start with';
         }
         return null;
       },
@@ -81,10 +84,18 @@ class _StyledTextfieldState extends State<StyledTextField> {
             ? TextStyle(color: Colors.white.withOpacity(0.5))
             : Theme.of(context).textTheme.bodySmall,
         errorStyle: const TextStyle(color: Colors.red),
-        prefixIcon: Icon(
-          widget.icon,
-          color: (widget.isWhite == true) ? Colors.white : AppColors.hintColor,
-          size: 20,
+        prefixIcon: (widget.maxLines != null || widget.hint == 'Title')
+            ? null
+            : Icon(
+                widget.icon,
+                color: (widget.isWhite == true)
+                    ? Colors.white
+                    : AppColors.hintColor,
+                size: 20,
+              ),
+        prefixIconConstraints: BoxConstraints(
+          minWidth: 40, // Ensure enough space for the icon
+          minHeight: 0, // Remove extra height constraint
         ),
         enabledBorder: OutlineInputBorder(
           gapPadding: 0,

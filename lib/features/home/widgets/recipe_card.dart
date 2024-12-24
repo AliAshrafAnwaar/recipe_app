@@ -1,15 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
-import 'package:recipe_app/core/utils/app_router.dart';
 import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/data/model/recipe_model.dart';
 import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/recipe_details.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
-import 'package:recipe_app/providers/user_provider.dart';
 
 class RecipeCard extends ConsumerStatefulWidget {
   const RecipeCard({super.key, required this.recipe});
@@ -122,15 +119,17 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user) {
           ),
         ),
         (recipe.imageLink.isEmpty)
-            ? SizedBox()
+            ? const SizedBox()
             : Center(child: Image.network(recipe.imageLink)),
         const Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               UserActionButton(icon: Icons.thumb_up_alt_outlined, text: '1'),
+              SizedBox(height: 10, child: VerticalDivider()),
               UserActionButton(icon: Icons.comment, text: '3'),
+              SizedBox(height: 10, child: VerticalDivider()),
               UserActionButton(icon: Icons.favorite_border_outlined, text: ''),
             ],
           ),

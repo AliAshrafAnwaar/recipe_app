@@ -9,22 +9,12 @@ class UserActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.grey[200],
-      borderRadius: BorderRadius.circular(30),
+    return Flexible(
       child: InkWell(
         onTap: () {},
-        borderRadius: BorderRadius.circular(30),
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: (MediaQuery.sizeOf(context).width * 0.3 <= 150)
-                ? (MediaQuery.sizeOf(context).width * 0.3)
-                : (150),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-          ),
+        child: SizedBox(
+          width: double.infinity,
+          height: 40,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

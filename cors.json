@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["*", "fire-auth-1cb50.appspot.com"],
+    "method": ["GET", "POST", "PUT"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "Authorization"]
+  }
+]

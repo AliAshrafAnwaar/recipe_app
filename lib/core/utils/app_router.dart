@@ -6,9 +6,9 @@ import 'package:recipe_app/features/auth/sign/sign_up/sign_up.dart';
 import 'package:recipe_app/features/auth/splash/splash.dart';
 import 'package:recipe_app/features/home/home.dart';
 import 'package:recipe_app/features/home/menu.dart';
-import 'package:recipe_app/features/home/recipe_details.dart';
 import 'package:recipe_app/features/profile/profile_screen.dart';
 import 'package:recipe_app/features/create_recipe/create_recipe.dart';
+import 'package:recipe_app/features/profile/user_listings.dart';
 
 class AppRouter {
   static const splash = "/splash";
@@ -32,7 +32,7 @@ class AppRouter {
   static const pageViewModel = "/pageViewModel";
   static const recentSearches = "/recentSearches";
   static const jobList = "/jobList";
-  static const userList = "/userList";
+  static const userListings = "/userListings";
   static const othersProfileScreen = "/othersProfileScreen";
 
   static GoRouter router = GoRouter(
@@ -105,17 +105,10 @@ class AppRouter {
       //     );
       //   },
       // ),
-      // GoRoute(
-      //     path: userList,
-      //     name: userList,
-      //     builder: (context, state) {
-      //       final Map<String, dynamic> extra =
-      //           state.extra as Map<String, dynamic>;
-      //       return UserListScreen(
-      //         userName: extra['userName'] as String,
-      //         users: extra['users'] as List<UserModel>,
-      //       );
-      //     }),
+      GoRoute(
+          path: userListings,
+          name: userListings,
+          builder: (context, state) => const UserListings()),
       // GoRoute(
       //   path: recentSearches,
       //   name: recentSearches,

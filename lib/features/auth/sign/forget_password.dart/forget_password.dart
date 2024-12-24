@@ -1,7 +1,6 @@
 //forgetpassword
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/welcome_text.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';

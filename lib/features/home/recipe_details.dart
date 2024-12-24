@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/app_router.dart';
 import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/data/model/recipe_model.dart';
@@ -15,7 +16,9 @@ class RecipeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: AppColors.secondaryText,
         appBar: AppBar(
+          backgroundColor: AppColors.secondaryText,
           title: Text(
             "${user.username}'s Recipe",
             style: AppTextStyles.secondaryTextStyle,

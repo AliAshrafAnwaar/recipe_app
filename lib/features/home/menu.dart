@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
+import 'package:recipe_app/core/utils/app_router.dart';
 import 'package:recipe_app/core/utils/styles.dart';
+import 'package:recipe_app/data/model/user_model.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
-class Menu extends StatelessWidget {
+class Menu extends ConsumerWidget {
   const Menu({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProviderProvider);
     return Scaffold(
       backgroundColor: AppColors.secondaryText,
       appBar: AppBar(
@@ -18,26 +24,34 @@ class Menu extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              userContainer(),
+              userContainer(context, user!),
               Row(
                 children: [
                   Flexible(
                     child: menuItem(
                       title: 'Favorites',
-                      icon: Icons.favorite,
+                      icon: Icon(
+                        Icons.favorite,
+                        color: AppColors.mainColor,
+                      ),
                       onTap: () {},
                     ),
                   ),
                   Flexible(
                     child: menuItem(
                       title: 'My listings',
-                      icon: Icons.list,
-                      onTap: () {},
+                      icon: Icon(
+                        Icons.list,
+                        color: AppColors.mainColor,
+                      ),
+                      onTap: () {
+                        GoRouter.of(context).push(AppRouter.userListings);
+                      },
                     ),
                   ),
                 ],
@@ -47,8 +61,13 @@ class Menu extends StatelessWidget {
                   Flexible(
                     child: menuItem(
                       title: 'Edit Profile',
-                      icon: Icons.edit,
-                      onTap: () {},
+                      icon: Icon(
+                        Icons.edit,
+                        color: AppColors.mainColor,
+                      ),
+                      onTap: () {
+                        GoRouter.of(context).push(AppRouter.profileScreen);
+                      },
                     ),
                   ),
                   const Expanded(
@@ -58,17 +77,20 @@ class Menu extends StatelessWidget {
               ),
               SizedBox(height: 8),
               settingsItem(
-                icon: Icons.settings,
+                icon: Icon(
+                  Icons.settings,
+                  color: AppColors.mainColor,
+                ),
                 title: 'Settings & privacy',
                 onTap: () {},
               ),
               settingsItem(
-                icon: Icons.help,
+                icon: Icon(Icons.help, color: AppColors.mainColor),
                 title: 'Help and support',
                 onTap: () {},
               ),
               settingsItem(
-                icon: Icons.logout,
+                icon: Icon(Icons.logout, color: AppColors.mainColor),
                 title: 'Logout',
                 onTap: () {},
               ),
@@ -79,25 +101,27 @@ class Menu extends StatelessWidget {
     );
   }
 
-  Widget userContainer() {
+  Widget userContainer(BuildContext context, UserModel user) {
     return Card(
       shadowColor: Colors.black.withOpacity(0.5),
       elevation: 1,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: Image.asset('assets/images/profile.jpg').image,
-            ),
-            const SizedBox(width: 16),
-            const Text('Ali Ashraf'),
-            const Expanded(child: SizedBox()),
-            IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () {},
-            ),
-          ],
+      child: InkWell(
+        onTap: () {
+          GoRouter.of(context).push(AppRouter.profileScreen);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: Image.network(user.image).image,
+              ),
+              const SizedBox(width: 16),
+              Text(user.username),
+              const Expanded(child: SizedBox()),
+              const Icon(Icons.arrow_forward_ios)
+            ],
+          ),
         ),
       ),
     );
@@ -105,31 +129,34 @@ class Menu extends StatelessWidget {
 
   Widget menuItem(
       {required String title,
-      required IconData icon,
-      required VoidCallback onTap}) {
+      required Widget icon,
+      required Function() onTap}) {
     return Card(
         shadowColor: Colors.black.withOpacity(0.5),
         elevation: 1,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: double.infinity,
-              ),
-              Icon(icon),
-              const SizedBox(height: 8),
-              Text(title),
-            ],
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                ),
+                icon,
+                const SizedBox(height: 8),
+                Text(title),
+              ],
+            ),
           ),
         ));
   }
 
   Widget settingsItem(
       {required String title,
-      required IconData icon,
+      required Widget icon,
       required VoidCallback onTap}) {
     return InkWell(
       onTap: onTap,
@@ -144,7 +171,7 @@ class Menu extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(icon),
+                icon,
                 const SizedBox(width: 8),
                 Text(title),
                 const Expanded(child: SizedBox()),

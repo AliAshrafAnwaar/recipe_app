@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:recipe_app/data/model/user_model.dart';
+import 'package:recipe_app/core/constants/app_colors.dart';
+import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';
 import 'package:recipe_app/features/shared_widgets/styled_textField.dart';
 import 'package:recipe_app/providers/user_provider.dart';
@@ -42,12 +42,14 @@ class _CreateRecipeState extends ConsumerState<CreateRecipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.secondaryText,
       appBar: AppBar(
-        title: Text('Create Recipe'),
+        backgroundColor: AppColors.secondaryText,
+        title: Text('Create Recipe', style: AppTextStyles.primaryTextStyle),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(

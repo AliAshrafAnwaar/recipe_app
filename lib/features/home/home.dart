@@ -20,35 +20,41 @@ class Home extends ConsumerWidget {
     recipes.sort((a, b) => b.date.compareTo(a.date));
 
     return Container(
-      color: Colors.white,
+      color: AppColors.secondaryText,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: AppColors.secondaryText,
-          body: Column(
-            children: [
-              appBarRow(context),
-              profilePostRow(context, user),
-              Flexible(
-                child: RefreshIndicator(
-                  color: AppColors.mainColor,
-                  onRefresh: () async {
-                    ref.invalidate(recipeProviderProvider);
-                  },
-                  child: (recipes.isEmpty)
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.mainColor,
-                          ),
-                        )
-                      : ListView.builder(
-                          itemCount: recipes.length,
-                          itemBuilder: (context, index) {
-                            return RecipeCard(recipe: recipes[index]);
-                          },
-                        ),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                appBarRow(context),
+                profilePostRow(context, user),
+                Flexible(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 600),
+                    child: RefreshIndicator(
+                      color: AppColors.mainColor,
+                      onRefresh: () async {
+                        ref.invalidate(recipeProviderProvider);
+                      },
+                      child: (recipes.isEmpty)
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.mainColor,
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: recipes.length,
+                              itemBuilder: (context, index) {
+                                return RecipeCard(recipe: recipes[index]);
+                              },
+                            ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

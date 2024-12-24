@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/utils/app_router.dart';
 import 'package:recipe_app/core/utils/styles.dart';
+import 'package:recipe_app/data/model/recipe_model.dart';
+import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
 
 class RecipeDetails extends StatelessWidget {
-  const RecipeDetails({super.key});
+  const RecipeDetails({super.key, required this.user, required this.recipe});
+
+  final UserModel user;
+  final RecipeModel recipe;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Author Names Recipe',
+            "${user.username}'s Recipe",
             style: AppTextStyles.secondaryTextStyle,
           ),
           centerTitle: true,
@@ -20,9 +25,9 @@ class RecipeDetails extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Divider(),
+              const Divider(),
               ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 500),
+                constraints: const BoxConstraints(maxWidth: 500),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,19 +37,17 @@ class RecipeDetails extends StatelessWidget {
                       child: Row(
                         children: [
                           CircleAvatar(
-                              backgroundImage:
-                                  Image.asset('assets/images/profile.jpg')
-                                      .image),
+                              backgroundImage: Image.network(user.image).image),
                           const SizedBox(width: 8),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Recipe Author',
+                                user.username,
                                 style: AppTextStyles.secondaryTextStyle,
                               ),
                               Text(
-                                'Date',
+                                '${DateTime.now().difference(recipe.date).inHours} hours ago',
                                 style: AppTextStyles.subTextStyle,
                               ),
                             ],
@@ -52,17 +55,17 @@ class RecipeDetails extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Padding(
+                    Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            'Recipe Name',
+                            recipe.title,
                             style: TextStyle(),
                           ),
                           Text(
-                            'Recipe Discription',
+                            recipe.description,
                             style: TextStyle(),
                           ),
                           const SizedBox(
@@ -71,9 +74,11 @@ class RecipeDetails extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Image.asset(
-                      'assets/images/profile.jpg',
-                    ),
+                    (recipe.imageLink.isEmpty)
+                        ? SizedBox()
+                        : Image.network(
+                            recipe.imageLink,
+                          ),
                     const Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: const Row(

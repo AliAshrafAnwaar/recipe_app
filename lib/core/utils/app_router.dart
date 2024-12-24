@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/features/auth/sign/forget_password.dart/forget_password.dart';
 import 'package:recipe_app/features/auth/sign/sign_in/sign_in.dart';
-import 'package:recipe_app/features/auth/sign/sign_up/signup.dart';
+import 'package:recipe_app/features/auth/sign/sign_up/sign_up.dart';
 import 'package:recipe_app/features/auth/splash/splash.dart';
 import 'package:recipe_app/features/home/home.dart';
 import 'package:recipe_app/features/home/menu.dart';
@@ -136,7 +136,7 @@ class AppRouter {
       GoRoute(
         path: recipeCreate,
         name: recipeCreate,
-        builder: (context, state) => const CreateRecipe(),
+        builder: (context, state) => CreateRecipe(),
       ),
 
       // GoRoute(
@@ -186,10 +186,10 @@ class AppRouter {
           path: menuScreen,
           name: menuScreen,
           builder: (context, state) => const Menu()),
-      GoRoute(
-          path: recipeDetails,
-          name: recipeDetails,
-          builder: (context, state) => const RecipeDetails()),
+      // GoRoute(
+      //     path: recipeDetails,
+      //     name: recipeDetails,
+      //     builder: (context, state) => const RecipeDetails()),
       // //end bodaSayed
     ],
   );

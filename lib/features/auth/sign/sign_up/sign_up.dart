@@ -1,6 +1,9 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 //signup
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
+import 'package:recipe_app/core/utils/app_router.dart';
 import 'package:recipe_app/data/repo/main_repo.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/google_facebook_sign.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/styled_text_navigation_to_from_signin.dart';
@@ -9,18 +12,18 @@ import 'package:recipe_app/features/auth/sign/sign_up/widgets/text_between_divid
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/welcome_text.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';
 import 'package:recipe_app/features/shared_widgets/styled_textField.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   //Key for validation
   final _formKey = GlobalKey<FormState>();
-  final _rep = MainRepo();
 
   // Create controllers for the TextFields
   final TextEditingController _fullNameController = TextEditingController();
@@ -40,6 +43,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userAuth = ref.read(userProviderProvider.notifier);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.secondaryText,
@@ -60,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 30),
                   //TextFileds for name email password and confirm pass
                   StyledTextField(
-                      hint: "Full Name",
+                      hint: "Username",
                       icon: Icons.person_outlined,
                       controller: _fullNameController),
                   const SizedBox(height: 16),
@@ -87,12 +92,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   //cubit
                   StyledButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (registerCheck()) {
-                          _rep.signUp(
+                          await userAuth.signUp(
                               _emailController.text,
                               _passwordController.text,
                               _fullNameController.text);
+                          GoRouter.of(context)
+                              .pushReplacement(AppRouter.homeScreen);
                         }
                       },
                       text: "Register"),

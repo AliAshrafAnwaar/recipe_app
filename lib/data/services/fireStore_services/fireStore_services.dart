@@ -41,6 +41,19 @@ class FireStoreService {
     }
   }
 
+  // Add a document to a collection
+  Future<void> addRecipe(
+      String collectionPath, Map<String, dynamic> data) async {
+    try {
+      await _firestore
+          .collection(collectionPath)
+          .doc(data['recipeID'])
+          .set(data);
+    } catch (e) {
+      print('Error adding document: $e');
+    }
+  }
+
   // Retrieve all documents from a collection
   Future<QuerySnapshot> getCollection(String collectionPath) async {
     try {

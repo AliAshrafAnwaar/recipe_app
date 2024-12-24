@@ -29,4 +29,9 @@ class FirestoreRepo {
   Future<QuerySnapshot> getCollection(String collectionPath) async {
     return await _fireStoreService.getCollection(collectionPath);
   }
+
+  Future<void> addRecipe(
+      String collectionPath, Map<String, dynamic> data) async {
+    await _fireStoreService.addRecipe(collectionPath, data);
+  }
 }

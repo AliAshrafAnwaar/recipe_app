@@ -1,12 +1,15 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/styles.dart';
+import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/profile/widgets/edit_bio_dialog.dart';
 import 'package:recipe_app/features/profile/widgets/edit_info_dialog.dart';
 import 'package:recipe_app/features/profile/widgets/info_display.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   Widget buildBioHeader(String title, {required VoidCallback onPressed}) {
@@ -28,7 +31,9 @@ class ProfileScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProviderProvider);
+    final userNotifier = ref.read(userProviderProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.secondaryText,
       appBar: AppBar(
@@ -44,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (context) => EditInfoDialog(),
+                builder: (context) => EditInfoDialog(user: user!),
               );
             },
             icon: const Icon(
@@ -57,13 +62,14 @@ class ProfileScreen extends StatelessWidget {
       body: Column(
         children: [
           const Divider(),
-          Flexible(child: buildProfileScreen(context)),
+          Flexible(child: buildProfileScreen(context, user, userNotifier)),
         ],
       ),
     );
   }
 
-  Widget buildProfileScreen(BuildContext context) {
+  Widget buildProfileScreen(
+      BuildContext context, UserModel? user, UserProvider userNotifier) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView(
@@ -74,11 +80,10 @@ class ProfileScreen extends StatelessWidget {
             alignment: Alignment.bottomRight,
             children: [
               CircleAvatar(
-                radius: 80,
+                radius: 100,
                 backgroundColor: Colors.grey.shade200,
-                child: const ClipOval(
-                  child: Icon(Icons.person),
-                ),
+                backgroundImage:
+                    Image.network((user == null) ? '' : user.image).image,
               ),
               Positioned(
                 right: 7,
@@ -91,7 +96,10 @@ class ProfileScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await userNotifier
+                          .profileImageUpload(user ?? user!.copyWith());
+                    },
                     icon: const Icon(Icons.edit, color: Colors.white),
                     padding: EdgeInsets
                         .zero, // Reduce padding inside IconButton to minimize size
@@ -107,25 +115,10 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Author Name',
+                  (user != null) ? user.username : '',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Job Title' ?? 'No job title',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const SizedBox(width: 2),
-                    const Icon(
-                      Icons.verified,
-                      color: AppColors.primaryColor,
-                      size: 16,
-                    )
-                  ],
-                )
               ],
             ),
           ),
@@ -138,7 +131,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     InkWell(
                       child: Text(
-                        '1',
+                        (user != null) ? user.recipes.length.toString() : '0',
                         style: AppTextStyles.secondaryTextStyle,
                       ),
                       onTap: () {
@@ -172,25 +165,33 @@ class ProfileScreen extends StatelessWidget {
             style: AppTextStyles.secondaryTextStyle,
           ),
           const SizedBox(height: 10),
-          const InfoDisplay(
-              text: 'aliashrafanwaar@gmail.com', icon: Icons.email),
+          InfoDisplay(
+              text: (user != null) ? user.email : '', icon: Icons.email),
           const SizedBox(
               width: 10), // Adjust spacing based on your layout width
-          const InfoDisplay(
-              text: '01025591901' ?? 'No phone number',
+          InfoDisplay(
+              text: (user != null)
+                  ? user.phoneNumber.isEmpty
+                      ? 'No phone number'
+                      : user.phoneNumber
+                  : 'No phone number',
               icon: Icons.phone_android),
           const SizedBox(height: 24),
           buildBioHeader('Bio', onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => EditBioDialog(),
+              builder: (context) => EditBioDialog(
+                user: user!,
+              ),
             );
           }),
           const SizedBox(height: 10),
-          const CustomBioDisplay(
-              text:
-                  'This is a tes stample for the bio of the osumn ali ashraf' ??
-                      'No bio'),
+          CustomBioDisplay(
+              text: (user != null)
+                  ? user.bio.isEmpty
+                      ? 'No bio'
+                      : user.bio
+                  : 'No Bio'),
           const SizedBox(height: 28),
         ],
       ),

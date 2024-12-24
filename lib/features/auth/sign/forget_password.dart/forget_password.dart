@@ -27,6 +27,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final TextEditingController _resetController = TextEditingController();
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _resetController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +51,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const WelcomeText(
-                    title: "Jôbizz",
+                    title: "Recipe Hub",
                     headline: "Forgot Password",
                     text:
                         "Enter your email or phone number, we will send you verification code",

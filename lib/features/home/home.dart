@@ -7,6 +7,7 @@ import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/widgets/create_recipe_container.dart';
 import 'package:recipe_app/features/home/widgets/recipe_card.dart';
+import 'package:recipe_app/providers/recipe_provider.dart';
 import 'package:recipe_app/providers/user_provider.dart';
 
 class Home extends ConsumerWidget {
@@ -15,22 +16,39 @@ class Home extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     UserModel? user = ref.watch(userProviderProvider);
+    final recipes = ref.watch(recipeProviderProvider)!.toList();
+    recipes.sort((a, b) => b.date.compareTo(a.date));
+
     return Container(
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: AppColors.secondaryText,
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                appBarRow(context),
-                profilePostRow(context, user!),
-                RecipeCard(),
-                RecipeCard(),
-                RecipeCard(),
-                RecipeCard(),
-              ],
-            ),
+          body: Column(
+            children: [
+              appBarRow(context),
+              profilePostRow(context, user),
+              Flexible(
+                child: RefreshIndicator(
+                  color: AppColors.mainColor,
+                  onRefresh: () async {
+                    ref.invalidate(recipeProviderProvider);
+                  },
+                  child: (recipes.isEmpty)
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.mainColor,
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: recipes.length,
+                          itemBuilder: (context, index) {
+                            return RecipeCard(recipe: recipes[index]);
+                          },
+                        ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -80,7 +98,7 @@ class Home extends ConsumerWidget {
     );
   }
 
-  Widget profilePostRow(BuildContext context, UserModel user) {
+  Widget profilePostRow(BuildContext context, UserModel? user) {
     return Column(
       children: [
         Padding(
@@ -94,7 +112,8 @@ class Home extends ConsumerWidget {
                 child: CircleAvatar(
                   backgroundColor: AppColors.primaryColor.withOpacity(0.5),
                   radius: 20,
-                  backgroundImage: Image.network(user.image).image,
+                  backgroundImage:
+                      Image.network((user == null) ? '' : user.image).image,
                 ),
               ),
               const SizedBox(width: 10),

@@ -52,7 +52,7 @@ class _StyledTextfieldState extends State<StyledTextField> {
     return TextFormField(
       maxLines: (widget.maxLines != null) ? widget.maxLines : 1,
       onChanged: (widget.isNotifier == true) ? (e) {} : null,
-      cursorColor: (widget.isWhite == true) ? Colors.white : null,
+      cursorColor: AppColors.mainColor,
       style: (widget.isWhite == true)
           ? TextStyle(color: Colors.white)
           : Theme.of(context).textTheme.bodyMedium,

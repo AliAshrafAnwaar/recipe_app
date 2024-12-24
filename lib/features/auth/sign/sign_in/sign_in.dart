@@ -38,6 +38,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -53,9 +61,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 children: [
                   //First three Rows of Text presentation of the title headline and text
                   const WelcomeText(
-                      title: "Jôbizz",
+                      title: "Recipe Hub",
                       headline: "Welcome Back 👋",
-                      text: "Let’s log in. Apply to jobs!"),
+                      text: "Let’s log in. Explore Recipes!"),
                   const SizedBox(height: 50),
 
                   //TextFileds for name email password and confirm pass
@@ -82,7 +90,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                   _passwordController.text)
                               .then((value) {
                             if (value) {
-                              GoRouter.of(context).push(AppRouter.homeScreen);
+                              GoRouter.of(context)
+                                  .pushReplacement(AppRouter.homeScreen);
                             }
                           }, onError: (e) {
                             ScaffoldMessenger.of(context).showSnackBar(

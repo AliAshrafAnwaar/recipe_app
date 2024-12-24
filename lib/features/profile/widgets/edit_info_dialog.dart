@@ -1,23 +1,51 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
+import 'package:recipe_app/core/utils/styles.dart';
+import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';
+import 'package:recipe_app/providers/user_provider.dart';
+import 'package:recipe_app/data/repo/main_repo.dart';
 
-class EditInfoDialog extends StatelessWidget {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController jobTitleController = TextEditingController();
+class EditInfoDialog extends ConsumerStatefulWidget {
+  final UserModel user;
+
+  const EditInfoDialog({required this.user});
+
+  @override
+  _EditInfoDialogState createState() => _EditInfoDialogState();
+}
+
+class _EditInfoDialogState extends ConsumerState<EditInfoDialog> {
+  late TextEditingController nameController;
+  late TextEditingController phoneNumberController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(text: widget.user.username);
+    phoneNumberController =
+        TextEditingController(text: widget.user.phoneNumber);
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    phoneNumberController.dispose();
+    super.dispose();
+  }
 
   bool isNameValid() {
-    if (nameController.text.contains(' ') &&
-        nameController.text[0] == nameController.text[0].toUpperCase() &&
-        nameController.text[nameController.text.indexOf(' ') + 1] ==
-            nameController.text[nameController.text.indexOf(' ') + 1]
-                .toUpperCase()) {
-      return true;
+    final name = nameController.text.trim();
+    final nameRegex = RegExp(r'^[a-zA-Z\W]*$');
+
+    if (name.contains(' ')) {
+      return false;
     }
-    return false;
+
+    return nameRegex.hasMatch(name);
   }
 
   bool isPhoneNumberValid() {
@@ -29,12 +57,45 @@ class EditInfoDialog extends StatelessWidget {
     return false;
   }
 
-  bool isJopTitleValid() {
-    if (jobTitleController.text[0] ==
-        jobTitleController.text[0].toUpperCase()) {
-      return true;
+  Future<void> _saveChanges() async {
+    if (nameController.text.isNotEmpty ||
+        phoneNumberController.text.isNotEmpty) {
+      if (!isNameValid()) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Name is not valid"),
+          ),
+        );
+        return;
+      }
+      if (!isPhoneNumberValid()) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Phone number is not valid"),
+          ),
+        );
+        return;
+      }
+
+      UserModel updatedUser = widget.user.copyWith(
+        username: nameController.text,
+        phoneNumber: phoneNumberController.text,
+      );
+
+      final user = ref.read(userProviderProvider.notifier);
+      await user.updateUserDetails(
+          user: updatedUser,
+          newUsername: nameController.text,
+          newPhoneNumber: phoneNumberController.text);
+
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Fields can't be empty"),
+        ),
+      );
     }
-    return false;
   }
 
   @override
@@ -45,67 +106,25 @@ class EditInfoDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            EditInfoTextFiled(
-              initialText: 'name',
+            EditInfoTextField(
+              initialText: widget.user.username,
               controller: nameController,
-              hint: "Full Name",
+              hint: "Username",
               icon: Icons.person,
             ),
-            EditInfoTextFiled(
-              initialText: 'user!.phoneNumber' ?? '',
+            EditInfoTextField(
+              initialText: widget.user.phoneNumber.isEmpty
+                  ? ''
+                  : widget.user.phoneNumber,
               controller: phoneNumberController,
               hint: 'Phone Number',
               icon: Icons.phone,
             ),
-            EditInfoTextFiled(
-              initialText: 'user!.profile!.jobTitle' ?? '',
-              controller: jobTitleController,
-              hint: "Job Title",
-              icon: Icons.title,
-            ),
             SizedBox(height: 16),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: StyledButton(
-                onPressed: () {
-                  if (nameController.text.isNotEmpty ||
-                      phoneNumberController.text.isNotEmpty ||
-                      jobTitleController.text.isNotEmpty) {
-                    if (isNameValid()) {
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Name is not valid"),
-                        ),
-                      );
-                    }
-                    if (isPhoneNumberValid()) {
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Phone number is not valid"),
-                        ),
-                      );
-                    }
-                    if (isJopTitleValid()) {
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("job Title is not valid"),
-                        ),
-                      );
-                    }
-
-                    Navigator.pop(context);
-                  } else {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Fields can't be empty"),
-                      ),
-                    );
-                  }
-                },
+                onPressed: _saveChanges,
                 text: 'Save Changes',
               ),
             ),
@@ -117,13 +136,13 @@ class EditInfoDialog extends StatelessWidget {
   }
 }
 
-class EditInfoTextFiled extends StatelessWidget {
+class EditInfoTextField extends StatelessWidget {
   final String initialText;
   final IconData icon;
   final TextEditingController controller;
   final String hint;
 
-  const EditInfoTextFiled({
+  const EditInfoTextField({
     super.key,
     required this.initialText,
     required this.icon,
@@ -176,7 +195,7 @@ class EditInfoTextFiled extends StatelessWidget {
         ),
         controller: controller, // Use the passed controller
         maxLines: 1,
-        style: Theme.of(context).textTheme.displayMedium,
+        style: AppTextStyles.secondaryTextStyle,
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +7,7 @@ import 'package:recipe_app/data/repo/auth_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe_app/data/repo/fireStore_repo.dart';
 import 'package:recipe_app/data/repo/storage_repo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainRepo {
   final AuthRepo _authRepo = AuthRepo();
@@ -31,6 +31,11 @@ class MainRepo {
       );
       await _firestoreRepo.addUser('users', userModel.toMap());
 
+      // Save the user token in SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userToken',
+          user.uid); // Save the token (or any other unique identifier)
+
       return userModel;
     }
     return null;
@@ -40,21 +45,45 @@ class MainRepo {
   Future<UserModel?> signIn(String email, String password) async {
     User? user = await _authRepo.signIn(email, password);
     if (user != null) {
+      // Fetch the user document from Firestore
       DocumentSnapshot userDoc =
           await _firestoreRepo.getUser('users', user.uid);
+
+      // Create a UserModel from the data
       final UserModel userModel =
           UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+
+      // Save the user token in SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userToken',
+          user.uid); // Save the token (or any other unique identifier)
+
+      // Return the UserModel
       return userModel;
     }
     return null;
+  }
+
+// Sign out
+  Future<void> signOut() async {
+    // Sign out from the authentication repository
+    await _authRepo.signOut();
+
+    // Remove the user token from SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userToken'); // Remove the saved token
+
+    // Optionally, you can clear all preferences if needed
+    // await prefs.clear();
   }
 
   Future<String> profileImageUpload(UserModel user) async {
     final XFile? pickedFile =
         await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      String? url =
-          await _storageRepo.uploadImage(File(pickedFile.path), 'users/');
+      File compressedFile = await _storageRepo.compressImageToTargetSize(
+          File(pickedFile.path), 400);
+      String? url = await _storageRepo.uploadImage(compressedFile, 'users/');
       UserModel modUser = user.copyWith(image: url);
       await _firestoreRepo.updateUser('users', modUser.userID, modUser.toMap());
       return url;
@@ -64,7 +93,9 @@ class MainRepo {
 
   Future<String> postImageUpload(File? image) async {
     if (image != null) {
-      String? url = await _storageRepo.uploadImage(image, 'Recipes/');
+      File compressedFile =
+          await _storageRepo.compressImageToTargetSize(image, 400);
+      String? url = await _storageRepo.uploadImage(compressedFile, 'Recipes/');
       return url;
     }
     return '';
@@ -101,6 +132,7 @@ class MainRepo {
       recipeID: DateTime.now().microsecondsSinceEpoch.toString(),
       title: title,
       description: description,
+      ratings: [],
       userID: userID,
       imageLink: await postImageUpload(image),
       date: DateTime.now(),
@@ -125,5 +157,55 @@ class MainRepo {
       return user;
     });
     return user;
+  }
+
+  Future<void> updateRecipe({
+    required String recipeID,
+    String? title,
+    String? description,
+    File? image,
+    double? rating,
+  }) async {
+    // Fetch the recipe data
+    final recipe =
+        await _firestoreRepo.getUser('recipes', recipeID).then((result) {
+      RecipeModel recipe =
+          RecipeModel.fromMap(result.data() as Map<String, dynamic>);
+      return recipe;
+    });
+
+    // Fetch the user data
+    final user =
+        await _firestoreRepo.getUser('users', recipe.userID).then((result) {
+      UserModel user = UserModel.fromMap(result.data() as Map<String, dynamic>);
+      return user;
+    });
+
+    // Create an updated recipe object
+    final RecipeModel updatedRecipe = recipe.copyWith(
+      title: title ?? recipe.title,
+      description: description ?? recipe.description,
+      imageLink:
+          image != null ? await postImageUpload(image) : recipe.imageLink,
+      ratings: rating != null
+          ? [...recipe.ratings, rating.toDouble()]
+          : recipe.ratings,
+    );
+
+    // Update the recipe in the 'recipes' collection
+    await _firestoreRepo.updateUser('recipes', recipeID, updatedRecipe.toMap());
+
+    // Update the user data
+    final updatedRecipes = user.recipes.map((recipe) {
+      return recipe.recipeID == recipeID ? updatedRecipe : recipe;
+    }).toList();
+
+    final UserModel updatedUser = user.copyWith(
+      recipes: updatedRecipes.toSet(),
+    );
+
+    // Update the user in the 'users' collection
+    await _firestoreRepo.updateUser(
+        'users', recipe.userID, updatedUser.toMap());
   }
 }

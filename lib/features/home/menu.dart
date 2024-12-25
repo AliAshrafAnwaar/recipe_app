@@ -23,79 +23,90 @@ class Menu extends ConsumerWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              userContainer(context, user!),
-              Row(
+        child: Column(
+          children: [
+            const Divider(
+              color: AppColors.mainColor,
+              thickness: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Flexible(
-                    child: menuItem(
-                      title: 'Favorites',
-                      icon: Icon(
-                        Icons.favorite,
-                        color: AppColors.mainColor,
+                  userContainer(context, user!),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: menuItem(
+                          title: 'Favorites',
+                          icon: Icon(
+                            Icons.favorite,
+                            color: AppColors.mainColor,
+                          ),
+                          onTap: () {},
+                        ),
                       ),
-                      onTap: () {},
-                    ),
+                      Flexible(
+                        child: menuItem(
+                          title: 'My listings',
+                          icon: Icon(
+                            Icons.list,
+                            color: AppColors.mainColor,
+                          ),
+                          onTap: () {
+                            GoRouter.of(context).push(AppRouter.userListings);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  Flexible(
-                    child: menuItem(
-                      title: 'My listings',
-                      icon: Icon(
-                        Icons.list,
-                        color: AppColors.mainColor,
+                  Row(
+                    children: [
+                      Flexible(
+                        child: menuItem(
+                          title: 'Edit Profile',
+                          icon: Icon(
+                            Icons.edit,
+                            color: AppColors.mainColor,
+                          ),
+                          onTap: () {
+                            GoRouter.of(context).push(AppRouter.profileScreen);
+                          },
+                        ),
                       ),
-                      onTap: () {
-                        GoRouter.of(context).push(AppRouter.userListings);
-                      },
+                      const Expanded(
+                        child: SizedBox(),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  settingsItem(
+                    icon: Icon(
+                      Icons.settings,
+                      color: AppColors.mainColor,
                     ),
+                    title: 'Settings & privacy',
+                    onTap: () {},
+                  ),
+                  settingsItem(
+                    icon: Icon(Icons.help, color: AppColors.mainColor),
+                    title: 'Help and support',
+                    onTap: () {},
+                  ),
+                  settingsItem(
+                    icon: Icon(Icons.logout, color: AppColors.mainColor),
+                    title: 'Logout',
+                    onTap: () {
+                      GoRouter.of(context).go(AppRouter.signIn);
+                      ref.read(userProviderProvider.notifier).signOut(context);
+                    },
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Flexible(
-                    child: menuItem(
-                      title: 'Edit Profile',
-                      icon: Icon(
-                        Icons.edit,
-                        color: AppColors.mainColor,
-                      ),
-                      onTap: () {
-                        GoRouter.of(context).push(AppRouter.profileScreen);
-                      },
-                    ),
-                  ),
-                  const Expanded(
-                    child: SizedBox(),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              settingsItem(
-                icon: Icon(
-                  Icons.settings,
-                  color: AppColors.mainColor,
-                ),
-                title: 'Settings & privacy',
-                onTap: () {},
-              ),
-              settingsItem(
-                icon: Icon(Icons.help, color: AppColors.mainColor),
-                title: 'Help and support',
-                onTap: () {},
-              ),
-              settingsItem(
-                icon: Icon(Icons.logout, color: AppColors.mainColor),
-                title: 'Logout',
-                onTap: () {},
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -114,7 +125,17 @@ class Menu extends ConsumerWidget {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: Image.network(user.image).image,
+                backgroundColor: AppColors.mainColor.withOpacity(0.1),
+                radius: 20,
+                backgroundImage: (user.image.isEmpty)
+                    ? null
+                    : Image.network(user.image).image,
+                child: (user.image.isEmpty)
+                    ? const Icon(
+                        Icons.person,
+                        color: AppColors.primaryText,
+                      )
+                    : null,
               ),
               const SizedBox(width: 16),
               Text(user.username),

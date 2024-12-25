@@ -9,6 +9,7 @@ import 'package:recipe_app/features/home/menu.dart';
 import 'package:recipe_app/features/profile/profile_screen.dart';
 import 'package:recipe_app/features/create_recipe/create_recipe.dart';
 import 'package:recipe_app/features/profile/user_listings.dart';
+import 'package:recipe_app/features/search/search.dart';
 
 class AppRouter {
   static const splash = "/splash";
@@ -27,7 +28,7 @@ class AppRouter {
   static const allApplicantsScreen = "/allApplicantsScreen";
   static const myPostedJob = "/myPostedJob";
   static const successScreen = "/successScreen";
-  static const jobSearchScreen = "/jobSearchScreen";
+  static const recipeSearchScreen = "/recipeSearchScreen";
   static const seeAllPage = "/seeAllPage";
   static const pageViewModel = "/pageViewModel";
   static const recentSearches = "/recentSearches";
@@ -88,11 +89,11 @@ class AppRouter {
         name: homeScreen,
         builder: (context, state) => const Home(),
       ),
-      // GoRoute(
-      //   path: jobSearchScreen,
-      //   name: jobSearchScreen,
-      //   builder: (context, state) => const JobSearchScreen(),
-      // ),
+      GoRoute(
+        path: recipeSearchScreen,
+        name: recipeSearchScreen,
+        builder: (context, state) => const Search(),
+      ),
       // GoRoute(
       //   path: jobList,
       //   name: jobList,

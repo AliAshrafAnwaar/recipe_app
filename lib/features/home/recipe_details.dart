@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
-import 'package:recipe_app/core/utils/app_router.dart';
 import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/data/model/recipe_model.dart';
 import 'package:recipe_app/data/model/user_model.dart';
+import 'package:recipe_app/features/home/widgets/rate_recipe_dialog.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
+import 'package:recipe_app/features/profile/widgets/edit_info_dialog.dart';
 
 class RecipeDetails extends StatelessWidget {
   const RecipeDetails({super.key, required this.user, required this.recipe});
@@ -24,67 +25,92 @@ class RecipeDetails extends StatelessWidget {
             style: AppTextStyles.secondaryTextStyle,
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => RateRecipeDialog(recipe: recipe),
+                );
+              },
+              icon: const Icon(
+                Icons.fastfood_outlined,
+                color: AppColors.primaryText,
+              ),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Divider(),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 500),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                              backgroundImage: Image.network(user.image).image),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                user.username,
-                                style: AppTextStyles.secondaryTextStyle,
-                              ),
-                              Text(
-                                '${DateTime.now().difference(recipe.date).inHours} hours ago',
-                                style: AppTextStyles.subTextStyle,
-                              ),
-                            ],
-                          ),
-                        ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              children: [
+                const Divider(
+                  color: AppColors.mainColor,
+                  thickness: 1,
+                ),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor:
+                                  AppColors.mainColor.withOpacity(0.1),
+                              radius: 20,
+                              backgroundImage: (user.image.isEmpty)
+                                  ? null
+                                  : Image.network(user.image).image,
+                              child: (user.image.isEmpty)
+                                  ? const Icon(
+                                      Icons.person,
+                                      color: AppColors.primaryText,
+                                    )
+                                  : null,
+                            ),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  user.username,
+                                  style: AppTextStyles.secondaryTextStyle,
+                                ),
+                                Text(
+                                  '${DateTime.now().difference(recipe.date).inHours} hours ago',
+                                  style: AppTextStyles.subTextStyle,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            recipe.title,
-                            style: TextStyle(),
-                          ),
-                          Text(
-                            recipe.description,
-                            style: TextStyle(),
-                          ),
-                          const SizedBox(
-                            width: 1,
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              recipe.title,
+                              style: AppTextStyles.secondaryTextStyle,
+                            ),
+                            Text(
+                              recipe.description.trim(),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    (recipe.imageLink.isEmpty)
-                        ? SizedBox()
-                        : Image.network(
-                            recipe.imageLink,
-                          ),
-                    const Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Row(
+                      (recipe.imageLink.isEmpty)
+                          ? SizedBox()
+                          : Image.network(
+                              recipe.imageLink,
+                            ),
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           UserActionButton(
@@ -94,11 +120,11 @@ class RecipeDetails extends StatelessWidget {
                               icon: Icons.favorite_border_outlined, text: ''),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

@@ -21,7 +21,19 @@ class RecipeProvider extends _$RecipeProvider {
     state = recipes;
   }
 
+  // Get a user's details
   Future<UserModel?> getUser(String userID) async {
     return await repo.getUser(userID);
+  }
+
+  // rate a recipe
+  Future<void> updateRecipe(
+      {required String recipeID,
+      String? title,
+      String? description,
+      File? image,
+      double? rating}) async {
+    await repo.updateRecipe(recipeID: recipeID, rating: rating);
+    getRecipes();
   }
 }

@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:recipe_app/core/constants/app_colors.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -19,10 +21,25 @@ class AuthServices {
       await userCredential.user?.reload(); // Reload to apply changes
       User? updatedUser = _auth.currentUser;
 
-      print(updatedUser?.displayName); // Verify the display name
+      Fluttertoast.showToast(
+        msg: '$username created successfully',
+        toastLength: Toast.LENGTH_SHORT, // Duration: SHORT or LONG
+        gravity: ToastGravity.BOTTOM, // Position: BOTTOM, CENTER, or TOP
+        backgroundColor: AppColors.mainColor, // Background color
+        textColor: AppColors.secondaryText, // Text color
+        fontSize: 16.0, // Text size
+      );
+
       return updatedUser;
     } catch (e) {
-      print("Error during sign-up: $e");
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_SHORT, // Duration: SHORT or LONG
+        gravity: ToastGravity.BOTTOM, // Position: BOTTOM, CENTER, or TOP
+        backgroundColor: AppColors.mainColor, // Background color
+        textColor: AppColors.secondaryText, // Text color
+        fontSize: 16.0, // Text size
+      );
       return null;
     }
   }
@@ -35,9 +52,24 @@ class AuthServices {
         email: email,
         password: password,
       );
+      Fluttertoast.showToast(
+        msg: '${userCredential.user!.displayName} signed successfully',
+        toastLength: Toast.LENGTH_SHORT, // Duration: SHORT or LONG
+        gravity: ToastGravity.BOTTOM, // Position: BOTTOM, CENTER, or TOP
+        backgroundColor: AppColors.mainColor, // Background color
+        textColor: AppColors.secondaryText, // Text color
+        fontSize: 16.0, // Text size
+      );
       return userCredential.user;
     } catch (e) {
-      print(e);
+      Fluttertoast.showToast(
+        msg: '$e',
+        toastLength: Toast.LENGTH_SHORT, // Duration: SHORT or LONG
+        gravity: ToastGravity.BOTTOM, // Position: BOTTOM, CENTER, or TOP
+        backgroundColor: AppColors.mainColor, // Background color
+        textColor: AppColors.secondaryText, // Text color
+        fontSize: 16.0, // Text size
+      );
       return null;
     }
   }

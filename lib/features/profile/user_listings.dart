@@ -20,6 +20,7 @@ class _UserListingsState extends ConsumerState<UserListings> {
     List<RecipeModel> recipes =
         (user != null && user.recipes.isNotEmpty) ? user.recipes.toList() : [];
     return Scaffold(
+      backgroundColor: AppColors.secondaryText,
       appBar: AppBar(
         backgroundColor: AppColors.secondaryText,
         title: Text(
@@ -27,23 +28,35 @@ class _UserListingsState extends ConsumerState<UserListings> {
           style: AppTextStyles.primaryTextStyle,
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          (recipes.isEmpty)
-              ? const Expanded(
-                  child: Center(
-                    child: Text('No Recipes'),
-                  ),
-                )
-              : Expanded(
-                  child: ListView.builder(
-                      itemCount: recipes.length,
-                      itemBuilder: (context, index) {
-                        return RecipeCard(recipe: recipes[index]);
-                      }),
-                )
-        ],
+      body: RefreshIndicator(
+        color: AppColors.mainColor,
+        onRefresh: () async {
+          await ref
+              .read(userProviderProvider.notifier)
+              .sharedPreferenceLogin(user.userID);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Divider(
+              color: AppColors.mainColor,
+              thickness: 1,
+            ),
+            (user!.recipes.isEmpty)
+                ? const Expanded(
+                    child: Center(
+                      child: Text('No Recipes'),
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                        itemCount: recipes.length,
+                        itemBuilder: (context, index) {
+                          return RecipeCard(recipe: recipes[index]);
+                        }),
+                  )
+          ],
+        ),
       ),
     );
   }

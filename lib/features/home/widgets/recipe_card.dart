@@ -1,3 +1,4 @@
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
@@ -52,6 +53,15 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
 }
 
 Widget card(BuildContext context, RecipeModel recipe, UserModel user) {
+  // Safely calculate the rating or default to 0.0 if ratings are empty
+  double _roundToQuarter(double value) {
+    return (value * 4).round() / 4; // Multiply by 4, round, and divide by 4
+  }
+
+  double rating = recipe.ratings.isNotEmpty
+      ? recipe.ratings.reduce((a, b) => a + b) / recipe.ratings.length / 5
+      : 0.0;
+
   return Card(
     color: AppColors.secondaryText,
     shadowColor: AppColors.mainColor.withOpacity(0.5),
@@ -64,8 +74,21 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user) {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(backgroundImage: Image.network(user.image).image),
+              CircleAvatar(
+                backgroundColor: AppColors.mainColor.withOpacity(0.1),
+                radius: 20,
+                backgroundImage: (user.image.isEmpty)
+                    ? null
+                    : Image.network(user.image).image,
+                child: (user.image.isEmpty)
+                    ? const Icon(
+                        Icons.person,
+                        color: AppColors.primaryText,
+                      )
+                    : null,
+              ),
               const SizedBox(width: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,9 +97,48 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user) {
                     user.username,
                     style: AppTextStyles.secondaryTextStyle,
                   ),
-                  Text(
-                    '${DateTime.now().difference(recipe.date).inHours} hours ago',
-                    style: AppTextStyles.subTextStyle,
+                  Row(
+                    children: [
+                      (rating == 0)
+                          ? SizedBox()
+                          : Text(
+                              rating.toStringAsFixed(
+                                  2), // Format rating to 2 decimals
+                              style: const TextStyle(
+                                color: AppColors.primaryText,
+                                fontSize: 12,
+                              ),
+                            ),
+                      RatingBar.builder(
+                        itemSize: 20,
+                        initialRating: _roundToQuarter(
+                            rating), // Use the safe rating value
+                        minRating: 0,
+                        maxRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 1,
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.fastfood_outlined,
+                          color: AppColors.mainColor,
+                        ),
+                        ignoreGestures: true, // Makes it non-editable
+                        onRatingUpdate: (rating) {}, // No action needed
+                      ),
+                      Text(
+                        '(${recipe.ratings.length})',
+                        style: const TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: 12,
+                        ),
+                      ),
+                      Text(
+                        '. ${DateTime.now().difference(recipe.date).inHours} hours ago',
+                        style: AppTextStyles.subTextStyle,
+                      ),
+                    ],
                   ),
                 ],
               ),

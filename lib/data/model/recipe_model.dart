@@ -5,6 +5,7 @@ class RecipeModel {
   final String userID;
   final String imageLink;
   final DateTime date;
+  final List<double> ratings;
 
   RecipeModel({
     required this.recipeID,
@@ -13,6 +14,7 @@ class RecipeModel {
     required this.userID,
     required this.imageLink,
     required this.date,
+    required this.ratings,
   });
 
   // Convert a Recipe object to a map
@@ -24,6 +26,7 @@ class RecipeModel {
       'userID': userID,
       'imageLink': imageLink,
       'date': date.toIso8601String(),
+      'ratings': ratings,
     };
   }
 
@@ -36,6 +39,7 @@ class RecipeModel {
       userID: map['userID'],
       imageLink: map['imageLink'],
       date: DateTime.parse(map['date']),
+      ratings: List<double>.from(map['ratings']),
     );
   }
 
@@ -47,6 +51,7 @@ class RecipeModel {
     String? userID,
     String? imageLink,
     DateTime? date,
+    List<double>? ratings,
   }) {
     return RecipeModel(
       recipeID: recipeID ?? this.recipeID,
@@ -55,6 +60,7 @@ class RecipeModel {
       userID: userID ?? this.userID,
       imageLink: imageLink ?? this.imageLink,
       date: date ?? this.date,
+      ratings: ratings ?? this.ratings,
     );
   }
 }

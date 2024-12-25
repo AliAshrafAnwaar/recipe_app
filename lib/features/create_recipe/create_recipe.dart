@@ -48,77 +48,88 @@ class _CreateRecipeState extends ConsumerState<CreateRecipe> {
         title: Text('Create Recipe', style: AppTextStyles.primaryTextStyle),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Divider(),
-                StyledTextField(
-                  controller: _titleController,
-                  hint: 'Title',
-                  icon: Icons.title,
-                ),
-                const SizedBox(height: 10),
-                StyledTextField(
-                  controller: _descriptionController,
-                  hint: 'Description',
-                  icon: Icons.description,
-                  maxLines: 10,
-                ),
-                const SizedBox(height: 10),
-                InkWell(
-                  onTap: () async {
-                    final XFile? pickedFile =
-                        await picker.pickImage(source: ImageSource.gallery);
-
-                    if (pickedFile != null) {
-                      setState(() {
-                        _image = File(pickedFile.path);
-                      });
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.image,
-                          color: _image != null ? Colors.green : Colors.grey,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          _image != null ? 'Image Selected' : 'Select Image',
-                          style: TextStyle(
-                            color: _image != null ? Colors.green : Colors.grey,
-                          ),
-                        ),
-                        Expanded(child: const SizedBox()),
-                        (_image == null)
-                            ? SizedBox()
-                            : IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _image = null;
-                                  });
-                                },
-                                icon: Icon(Icons.remove_circle_outline),
-                                color: Colors.green,
-                              )
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                StyledButton(
-                  onPressed: _submitForm,
-                  text: 'Create Recipe',
-                ),
-              ],
+        child: Column(
+          children: [
+            const Divider(
+              color: AppColors.mainColor,
+              thickness: 1,
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    StyledTextField(
+                      controller: _titleController,
+                      hint: 'Title',
+                      icon: Icons.title,
+                    ),
+                    const SizedBox(height: 10),
+                    StyledTextField(
+                      controller: _descriptionController,
+                      hint: 'Description',
+                      icon: Icons.description,
+                      maxLines: 10,
+                    ),
+                    const SizedBox(height: 10),
+                    InkWell(
+                      onTap: () async {
+                        final XFile? pickedFile =
+                            await picker.pickImage(source: ImageSource.gallery);
+
+                        if (pickedFile != null) {
+                          setState(() {
+                            _image = File(pickedFile.path);
+                          });
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.image,
+                              color:
+                                  _image != null ? Colors.green : Colors.grey,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              _image != null
+                                  ? 'Image Selected'
+                                  : 'Select Image',
+                              style: TextStyle(
+                                color:
+                                    _image != null ? Colors.green : Colors.grey,
+                              ),
+                            ),
+                            Expanded(child: const SizedBox()),
+                            (_image == null)
+                                ? SizedBox()
+                                : IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _image = null;
+                                      });
+                                    },
+                                    icon: Icon(Icons.remove_circle_outline),
+                                    color: Colors.green,
+                                  )
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    StyledButton(
+                      onPressed: _submitForm,
+                      text: 'Create Recipe',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

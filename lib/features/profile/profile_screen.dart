@@ -61,7 +61,10 @@ class ProfileScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          const Divider(),
+          const Divider(
+            color: AppColors.mainColor,
+            thickness: 1,
+          ),
           Flexible(child: buildProfileScreen(context, user, userNotifier)),
         ],
       ),
@@ -80,10 +83,18 @@ class ProfileScreen extends ConsumerWidget {
             alignment: Alignment.bottomRight,
             children: [
               CircleAvatar(
+                backgroundColor: AppColors.mainColor.withOpacity(0.1),
                 radius: 100,
-                backgroundColor: Colors.grey.shade200,
-                backgroundImage:
-                    Image.network((user == null) ? '' : user.image).image,
+                backgroundImage: (user!.image.isEmpty)
+                    ? null
+                    : Image.network(user.image).image,
+                child: (user.image.isEmpty)
+                    ? const Icon(
+                        Icons.person,
+                        size: 100,
+                        color: AppColors.primaryText,
+                      )
+                    : null,
               ),
               Positioned(
                 right: 7,
@@ -143,17 +154,6 @@ class ProfileScreen extends ConsumerWidget {
                         onTap: () {
                           GoRouter.of(context).pushNamed('/applicationsScreen');
                         }),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                      'Status' ?? 'No status',
-                      style: AppTextStyles.secondaryTextStyle,
-                    ),
-                    const Text(
-                      'Status',
-                    ),
                   ],
                 ),
               ],

@@ -34,4 +34,9 @@ class FirestoreRepo {
       String collectionPath, Map<String, dynamic> data) async {
     await _fireStoreService.addRecipe(collectionPath, data);
   }
+
+  Future<QuerySnapshot> searchByTitle(
+      String collectionPath, String title) async {
+    return await _fireStoreService.searchByTitle(collectionPath, title);
+  }
 }

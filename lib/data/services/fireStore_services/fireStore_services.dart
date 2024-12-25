@@ -63,4 +63,21 @@ class FireStoreService {
       rethrow;
     }
   }
+
+  // Search for documents by title
+  Future<QuerySnapshot> searchByTitle(
+      String collectionPath, String title) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('recipes')
+          .where('title', isGreaterThanOrEqualTo: title)
+          .where('title', isLessThanOrEqualTo: '$title\uf8ff') // Unicode trick
+          .get();
+
+      return querySnapshot;
+    } catch (e) {
+      print('Error searching documents by title: $e');
+      rethrow;
+    }
+  }
 }

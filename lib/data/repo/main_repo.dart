@@ -24,6 +24,7 @@ class MainRepo {
         userID: user.uid,
         email: user.email ?? '',
         username: user.displayName ?? '',
+        favorites: {},
         phoneNumber: '',
         bio: '',
         image: '',
@@ -133,6 +134,9 @@ class MainRepo {
       title: title,
       description: description,
       ratings: [],
+      likes: {},
+      comments: [],
+      favourites: {},
       userID: userID,
       imageLink: await postImageUpload(image),
       date: DateTime.now(),
@@ -207,5 +211,15 @@ class MainRepo {
     // Update the user in the 'users' collection
     await _firestoreRepo.updateUser(
         'users', recipe.userID, updatedUser.toMap());
+  }
+
+  //search
+  Future<Set<RecipeModel>> searchRecipesByTitle(String title) async {
+    final QuerySnapshot querySnapshot =
+        await _firestoreRepo.searchByTitle('recipes', title);
+    final Set<RecipeModel> recipes = querySnapshot.docs.map((doc) {
+      return RecipeModel.fromMap(doc.data() as Map<String, dynamic>);
+    }).toSet();
+    return recipes;
   }
 }

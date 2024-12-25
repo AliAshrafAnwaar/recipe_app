@@ -182,7 +182,26 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user) {
         ),
         (recipe.imageLink.isEmpty)
             ? const SizedBox()
-            : Center(child: Image.network(recipe.imageLink)),
+            : Center(
+                child: Image.network(
+                  recipe.imageLink,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
         const Padding(
           padding: EdgeInsets.all(8.0),
           child: Row(

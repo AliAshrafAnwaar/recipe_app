@@ -1,3 +1,5 @@
+import 'package:recipe_app/data/model/user_model.dart';
+
 class RecipeModel {
   final String recipeID;
   final String title;
@@ -6,6 +8,11 @@ class RecipeModel {
   final String imageLink;
   final DateTime date;
   final List<double> ratings;
+  final Set<String> likes;
+  final List<Map<String, String>>
+      comments; // List of comments with userID and comment text
+  final Set<String>
+      favourites; // List of userIDs who marked the recipe as favourite
 
   RecipeModel({
     required this.recipeID,
@@ -15,6 +22,9 @@ class RecipeModel {
     required this.imageLink,
     required this.date,
     required this.ratings,
+    required this.likes,
+    required this.comments,
+    required this.favourites,
   });
 
   // Convert a Recipe object to a map
@@ -27,6 +37,9 @@ class RecipeModel {
       'imageLink': imageLink,
       'date': date.toIso8601String(),
       'ratings': ratings,
+      'likes': likes.toList(), // Convert Set to List for storage
+      'comments': comments, // Store comments as is
+      'favourites': favourites.toList(), // Store favourites as is
     };
   }
 
@@ -40,10 +53,15 @@ class RecipeModel {
       imageLink: map['imageLink'],
       date: DateTime.parse(map['date']),
       ratings: List<double>.from(map['ratings']),
+      likes: Set<String>.from(map['likes']), // Convert List to Set
+      comments: List<Map<String, String>>.from(
+          map['comments']), // Convert to List of Maps
+      favourites:
+          Set<String>.from(map['favourites']), // Convert to List of Strings
     );
   }
 
-  // CopyWith method
+  // Create a copy of the RecipeModel with some fields replaced by new values
   RecipeModel copyWith({
     String? recipeID,
     String? title,
@@ -52,6 +70,9 @@ class RecipeModel {
     String? imageLink,
     DateTime? date,
     List<double>? ratings,
+    Set<String>? likes,
+    List<Map<String, String>>? comments,
+    Set<String>? favourites,
   }) {
     return RecipeModel(
       recipeID: recipeID ?? this.recipeID,
@@ -61,6 +82,9 @@ class RecipeModel {
       imageLink: imageLink ?? this.imageLink,
       date: date ?? this.date,
       ratings: ratings ?? this.ratings,
+      likes: likes ?? this.likes,
+      comments: comments ?? this.comments,
+      favourites: favourites ?? this.favourites,
     );
   }
 }

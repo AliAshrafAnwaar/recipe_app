@@ -8,6 +8,7 @@ import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/recipe_details.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
 class RecipeCard extends ConsumerStatefulWidget {
   const RecipeCard({super.key, required this.recipe, this.userListings});
@@ -31,6 +32,7 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
 
   @override
   Widget build(BuildContext context) {
+    print(widget.userListings);
     super.build(context); // Call super.build to ensure keep-alive functionality
     return FutureBuilder<UserModel?>(
       future: userdetails,
@@ -273,15 +275,20 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
                   onSelected: () {
                     ref.read(recipeProviderProvider.notifier).updateRecipe(
                         recipeID: recipe.recipeID,
+                        actionUser: ref.watch(userProviderProvider)!.userID,
                         favouriteRecipeID: recipe.recipeID);
                   },
                   onUnSelected: () {
                     ref.read(recipeProviderProvider.notifier).updateRecipe(
                         recipeID: recipe.recipeID,
+                        actionUser: ref.watch(userProviderProvider)!.userID,
                         unfavouriteRecipeID: recipe.recipeID);
                   },
-                  isSelected:
-                      user.favourites.toList().contains(recipe.recipeID),
+                  isSelected: ref
+                      .watch(userProviderProvider)!
+                      .favourites
+                      .toList()
+                      .contains(recipe.recipeID),
                   icon: Icons.favorite_border_outlined,
                   filledIcon: Icons.favorite,
                   text: ''),

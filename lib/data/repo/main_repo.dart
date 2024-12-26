@@ -166,6 +166,7 @@ class MainRepo {
 
   Future<void> updateRecipe({
     required String recipeID,
+    String? actionUser,
     String? title,
     String? description,
     File? image,
@@ -184,11 +185,20 @@ class MainRepo {
     });
 
     // Fetch the user data
-    final user =
+    final recipeUser =
         await _firestoreRepo.getUser('users', recipe.userID).then((result) {
       UserModel user = UserModel.fromMap(result.data() as Map<String, dynamic>);
       return user;
     });
+
+    UserModel user;
+    if (actionUser != null) {
+      user = await _firestoreRepo.getUser('users', actionUser).then((result) {
+        UserModel user =
+            UserModel.fromMap(result.data() as Map<String, dynamic>);
+        return user;
+      });
+    }
 
     // Create an updated recipe object
     final RecipeModel updatedRecipe = recipe.copyWith(
@@ -205,11 +215,11 @@ class MainRepo {
     await _firestoreRepo.updateUser('recipes', recipeID, updatedRecipe.toMap());
 
     // Update the user data
-    final updatedRecipes = user.recipes.map((recipe) {
+    final updatedRecipes = recipeUser.recipes.map((recipe) {
       return recipe.recipeID == recipeID ? updatedRecipe : recipe;
     }).toList();
 
-    final UserModel updatedUser = user.copyWith(
+    final UserModel updatedUser = recipeUser.copyWith(
       recipes: updatedRecipes.toSet(),
     );
 
@@ -229,14 +239,16 @@ class MainRepo {
 
     // Add recipe to user's favourites if provided
     if (favouriteRecipeID != null) {
+      print(actionUser);
+      print(favouriteRecipeID);
       await _firestoreRepo.addRecipeToFavourites(
-          user.userID, favouriteRecipeID);
+          actionUser!, favouriteRecipeID);
     }
 
     // Remove recipe from user's favourites if provided
     if (unFavouriteRecipeID != null) {
       await _firestoreRepo.removeRecipeFromFavourites(
-          user.userID, unFavouriteRecipeID);
+          actionUser!, unFavouriteRecipeID);
     }
   }
 

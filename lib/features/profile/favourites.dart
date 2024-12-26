@@ -37,10 +37,17 @@ class _FavouritesState extends ConsumerState<Favourites> {
 
     List<String> recipeIDs = user.favourites.toList();
 
-    // Fetch recipes as a Future
-    Future<Set<RecipeModel>> recipesFuture = ref
-        .read(userProviderProvider.notifier)
-        .getCollection(recipeIDs: recipeIDs);
+    Future<Set<RecipeModel>> recipesFuture;
+
+    if (recipeIDs.isNotEmpty) {
+      // Fetch recipes as a Future
+      recipesFuture = ref
+          .read(userProviderProvider.notifier)
+          .getCollection(recipeIDs: recipeIDs);
+    } else {
+      // Initialize an empty set of recipes
+      recipesFuture = Future.value(<RecipeModel>{});
+    }
 
     return Scaffold(
       backgroundColor: AppColors.secondaryText,
@@ -62,14 +69,21 @@ class _FavouritesState extends ConsumerState<Favourites> {
           future: recipesFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: CircularProgressIndicator(
+                color: AppColors.mainColor,
+              ));
             } else if (snapshot.hasError) {
               return Center(
                 child: Text('Error: ${snapshot.error}'),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
-                child: Text('No Recipes'),
+              return Center(
+                child: Flexible(
+                  child: Column(
+                    children: [Text('No Recipes'), Flexible(child: ListView())],
+                  ),
+                ),
               );
             }
 

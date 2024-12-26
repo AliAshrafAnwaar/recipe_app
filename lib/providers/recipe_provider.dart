@@ -32,6 +32,7 @@ class RecipeProvider extends _$RecipeProvider {
       String? title,
       String? description,
       File? image,
+      String? actionUser,
       double? rating,
       String? userLikeID,
       String? favouriteRecipeID,
@@ -41,6 +42,7 @@ class RecipeProvider extends _$RecipeProvider {
         recipeID: recipeID,
         rating: rating,
         userLike: userLikeID,
+        actionUser: actionUser,
         favouriteRecipeID: favouriteRecipeID,
         userDisLike: userDisLikeID,
         unFavouriteRecipeID: unfavouriteRecipeID);

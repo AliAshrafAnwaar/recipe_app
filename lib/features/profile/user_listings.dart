@@ -24,7 +24,7 @@ class _UserListingsState extends ConsumerState<UserListings> {
       appBar: AppBar(
         backgroundColor: AppColors.secondaryText,
         title: Text(
-          'Recipes',
+          'My Listings',
           style: AppTextStyles.primaryTextStyle,
         ),
       ),

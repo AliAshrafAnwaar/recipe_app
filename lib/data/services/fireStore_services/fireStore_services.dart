@@ -116,6 +116,7 @@ class FireStoreService {
 
   // Add a recipe to user's favourites and update the recipe's favourites
   Future<void> addRecipeToFavourites(String userId, String recipeId) async {
+    print('added to favourites');
     await _firestore.collection('users').doc(userId).update({
       'favourites': FieldValue.arrayUnion([recipeId])
     });

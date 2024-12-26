@@ -43,7 +43,7 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
           return const Center(child: Text('User not found'));
         } else {
           final user = snapshot.data!;
-          return card(context, widget.recipe, user, ref);
+          return card(context, widget.recipe, user, ref, widget.userListings);
         }
       },
     );
@@ -53,8 +53,8 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
   bool get wantKeepAlive => true; // Ensure the state is kept alive
 }
 
-Widget card(
-    BuildContext context, RecipeModel recipe, UserModel user, WidgetRef ref) {
+Widget card(BuildContext context, RecipeModel recipe, UserModel user,
+    WidgetRef ref, bool? userListing) {
   // Safely calculate the rating or default to 0.0 if ratings are empty
   double _roundToQuarter(double value) {
     return (value * 4).round() / 4; // Multiply by 4, round, and divide by 4
@@ -145,40 +145,42 @@ Widget card(
                 ],
               ),
               const Expanded(child: SizedBox()),
-              PopupMenuButton<String>(
-                icon: const Icon(Icons.more_vert), // Three dots icon
-                onSelected: (String value) {
-                  if (value == 'edit') {
-                    // Handle edit action
-                    print('Edit selected');
-                  } else if (value == 'delete') {
-                    // Handle delete action
-                    print('Delete selected');
-                  }
-                },
-                itemBuilder: (BuildContext context) => [
-                  const PopupMenuItem(
-                    value: 'edit',
-                    child: Row(
-                      children: const [
-                        Icon(Icons.edit, color: AppColors.mainColor),
-                        SizedBox(width: 8),
-                        Text('Edit'),
+              (userListing == null)
+                  ? const SizedBox()
+                  : PopupMenuButton<String>(
+                      icon: const Icon(Icons.more_vert), // Three dots icon
+                      onSelected: (String value) {
+                        if (value == 'edit') {
+                          // Handle edit action
+                          print('Edit selected');
+                        } else if (value == 'delete') {
+                          // Handle delete action
+                          print('Delete selected');
+                        }
+                      },
+                      itemBuilder: (BuildContext context) => [
+                        const PopupMenuItem(
+                          value: 'edit',
+                          child: Row(
+                            children: const [
+                              Icon(Icons.edit, color: AppColors.mainColor),
+                              SizedBox(width: 8),
+                              Text('Edit'),
+                            ],
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 'delete',
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete, color: AppColors.mainColor),
+                              SizedBox(width: 8),
+                              Text('Delete'),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'delete',
-                    child: Row(
-                      children: [
-                        Icon(Icons.delete, color: AppColors.mainColor),
-                        SizedBox(width: 8),
-                        Text('Delete'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

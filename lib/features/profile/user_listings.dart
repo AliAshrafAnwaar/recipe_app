@@ -52,7 +52,10 @@ class _UserListingsState extends ConsumerState<UserListings> {
                     child: ListView.builder(
                         itemCount: recipes.length,
                         itemBuilder: (context, index) {
-                          return RecipeCard(recipe: recipes[index]);
+                          return RecipeCard(
+                            recipe: recipes[index],
+                            userListings: true,
+                          );
                         }),
                   )
           ],

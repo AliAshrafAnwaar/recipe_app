@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/utils/app_router.dart';
+import 'package:recipe_app/data/model/recipe_model.dart';
 import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/data/repo/main_repo.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
@@ -86,5 +87,9 @@ class UserProvider extends _$UserProvider {
   Future<bool> sharedPreferenceLogin(String userID) async {
     state = await getUser(userID);
     return true;
+  }
+
+  Future<Set<RecipeModel>> getCollection({List<String>? recipeIDs}) async {
+    return await repo.getCollection(recipeIDs: recipeIDs);
   }
 }

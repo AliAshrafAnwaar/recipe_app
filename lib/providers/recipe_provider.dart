@@ -32,8 +32,18 @@ class RecipeProvider extends _$RecipeProvider {
       String? title,
       String? description,
       File? image,
-      double? rating}) async {
-    await repo.updateRecipe(recipeID: recipeID, rating: rating);
+      double? rating,
+      String? userLikeID,
+      String? favouriteRecipeID,
+      String? unfavouriteRecipeID,
+      String? userDisLikeID}) async {
+    await repo.updateRecipe(
+        recipeID: recipeID,
+        rating: rating,
+        userLike: userLikeID,
+        favouriteRecipeID: favouriteRecipeID,
+        userDisLike: userDisLikeID,
+        unFavouriteRecipeID: unfavouriteRecipeID);
     getRecipes();
   }
 }

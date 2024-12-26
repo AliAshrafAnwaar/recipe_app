@@ -41,17 +41,19 @@ class Menu extends ConsumerWidget {
                       Flexible(
                         child: menuItem(
                           title: 'Favorites',
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.favorite,
                             color: AppColors.mainColor,
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            GoRouter.of(context).push(AppRouter.favouriteList);
+                          },
                         ),
                       ),
                       Flexible(
                         child: menuItem(
                           title: 'My listings',
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.list,
                             color: AppColors.mainColor,
                           ),
@@ -67,7 +69,7 @@ class Menu extends ConsumerWidget {
                       Flexible(
                         child: menuItem(
                           title: 'Edit Profile',
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.edit,
                             color: AppColors.mainColor,
                           ),
@@ -81,9 +83,9 @@ class Menu extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   settingsItem(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.settings,
                       color: AppColors.mainColor,
                     ),

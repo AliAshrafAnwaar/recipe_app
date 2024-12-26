@@ -8,7 +8,7 @@ class UserModel {
   final String email;
   final String bio; // Added bio field
   final Set<RecipeModel> recipes;
-  final Set<RecipeModel> favorites; // Added favorites field
+  final Set<String> favourites; // Changed favourites field to Set<String>
 
   UserModel({
     required this.userID,
@@ -18,7 +18,7 @@ class UserModel {
     required this.email,
     required this.bio, // Added bio field
     required this.recipes,
-    required this.favorites, // Added favorites field
+    required this.favourites, // Changed favourites field to Set<String>
   });
 
   // Convert a User object to a map
@@ -31,9 +31,8 @@ class UserModel {
       'email': email,
       'bio': bio, // Added bio field
       'recipes': recipes.map((recipe) => recipe.toMap()).toList(),
-      'favorites': favorites
-          .map((recipe) => recipe.toMap())
-          .toList(), // Added favorites field
+      'favourites':
+          favourites.toList(), // Changed favourites field to Set<String>
     };
   }
 
@@ -49,9 +48,8 @@ class UserModel {
       recipes: (map['recipes'] as List)
           .map((recipe) => RecipeModel.fromMap(recipe))
           .toSet(),
-      favorites: (map['favorites'] as List)
-          .map((recipe) => RecipeModel.fromMap(recipe))
-          .toSet(), // Added favorites field
+      favourites: Set<String>.from(
+          map['favourites']), // Changed favourites field to Set<String>
     );
   }
 
@@ -64,7 +62,7 @@ class UserModel {
     String? email,
     String? bio,
     Set<RecipeModel>? recipes,
-    Set<RecipeModel>? favorites,
+    Set<String>? favourites, // Changed favourites field to Set<String>
   }) {
     return UserModel(
       userID: userID ?? this.userID,
@@ -74,7 +72,8 @@ class UserModel {
       email: email ?? this.email,
       bio: bio ?? this.bio,
       recipes: recipes ?? this.recipes,
-      favorites: favorites ?? this.favorites,
+      favourites: favourites ??
+          this.favourites, // Changed favourites field to Set<String>
     );
   }
 }

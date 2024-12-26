@@ -42,7 +42,7 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
           return Center(child: Text('User not found'));
         } else {
           final user = snapshot.data!;
-          return card(context, widget.recipe, user);
+          return card(context, widget.recipe, user, ref);
         }
       },
     );
@@ -52,7 +52,8 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
   bool get wantKeepAlive => true; // Ensure the state is kept alive
 }
 
-Widget card(BuildContext context, RecipeModel recipe, UserModel user) {
+Widget card(
+    BuildContext context, RecipeModel recipe, UserModel user, WidgetRef ref) {
   // Safely calculate the rating or default to 0.0 if ratings are empty
   double _roundToQuarter(double value) {
     return (value * 4).round() / 4; // Multiply by 4, round, and divide by 4
@@ -192,6 +193,7 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user) {
                     } else {
                       return Center(
                         child: CircularProgressIndicator(
+                          color: AppColors.mainColor,
                           value: loadingProgress.expectedTotalBytes != null
                               ? loadingProgress.cumulativeBytesLoaded /
                                   (loadingProgress.expectedTotalBytes ?? 1)
@@ -202,16 +204,49 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user) {
                   },
                 ),
               ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              UserActionButton(icon: Icons.thumb_up_alt_outlined, text: '1'),
-              SizedBox(height: 10, child: VerticalDivider()),
-              UserActionButton(icon: Icons.comment, text: '3'),
-              SizedBox(height: 10, child: VerticalDivider()),
-              UserActionButton(icon: Icons.favorite_border_outlined, text: ''),
+              UserActionButton(
+                  onSelected: () {
+                    ref.read(recipeProviderProvider.notifier).updateRecipe(
+                        recipeID: recipe.recipeID, userLikeID: user.userID);
+                  },
+                  onUnSelected: () {
+                    ref.read(recipeProviderProvider.notifier).updateRecipe(
+                        recipeID: recipe.recipeID, userDisLikeID: user.userID);
+                  },
+                  isSelected: recipe.likes.contains(user.userID),
+                  icon: Icons.thumb_up_alt_outlined,
+                  filledIcon: Icons.thumb_up_alt,
+                  text: recipe.likes.length.toString()),
+              const SizedBox(height: 10, child: VerticalDivider()),
+              UserActionButton(
+                  onSelected: () {},
+                  onUnSelected: () {},
+                  isSelected: recipe.likes.contains(user.userID),
+                  icon: Icons.comment,
+                  filledIcon: Icons.comment,
+                  text: '3'),
+              const SizedBox(height: 10, child: VerticalDivider()),
+              UserActionButton(
+                  onSelected: () {
+                    ref.read(recipeProviderProvider.notifier).updateRecipe(
+                        recipeID: recipe.recipeID,
+                        favouriteRecipeID: recipe.recipeID);
+                  },
+                  onUnSelected: () {
+                    ref.read(recipeProviderProvider.notifier).updateRecipe(
+                        recipeID: recipe.recipeID,
+                        unfavouriteRecipeID: recipe.recipeID);
+                  },
+                  isSelected:
+                      user.favourites.toList().contains(recipe.recipeID),
+                  icon: Icons.favorite_border_outlined,
+                  filledIcon: Icons.favorite,
+                  text: ''),
             ],
           ),
         ),

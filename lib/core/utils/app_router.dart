@@ -6,6 +6,7 @@ import 'package:recipe_app/features/auth/sign/sign_up/sign_up.dart';
 import 'package:recipe_app/features/auth/splash/splash.dart';
 import 'package:recipe_app/features/home/home.dart';
 import 'package:recipe_app/features/home/menu.dart';
+import 'package:recipe_app/features/profile/favourites.dart';
 import 'package:recipe_app/features/profile/profile_screen.dart';
 import 'package:recipe_app/features/create_recipe/create_recipe.dart';
 import 'package:recipe_app/features/profile/user_listings.dart';
@@ -32,7 +33,7 @@ class AppRouter {
   static const seeAllPage = "/seeAllPage";
   static const pageViewModel = "/pageViewModel";
   static const recentSearches = "/recentSearches";
-  static const jobList = "/jobList";
+  static const favouriteList = "/favouriteList";
   static const userListings = "/userListings";
   static const othersProfileScreen = "/othersProfileScreen";
 
@@ -94,18 +95,10 @@ class AppRouter {
         name: recipeSearchScreen,
         builder: (context, state) => const Search(),
       ),
-      // GoRoute(
-      //   path: jobList,
-      //   name: jobList,
-      //   builder: (context, state) {
-      //     final Map<String, dynamic> extra =
-      //         state.extra as Map<String, dynamic>;
-      //     return JobListScreen(
-      //       jobTitle: extra['jobTitle'] as String,
-      //       jobs: extra['jobs'] as List<PostedJob>,
-      //     );
-      //   },
-      // ),
+      GoRoute(
+          path: favouriteList,
+          name: favouriteList,
+          builder: (context, state) => const Favourites()),
       GoRoute(
           path: userListings,
           name: userListings,

@@ -12,7 +12,7 @@ class RecipeModel {
   final List<Map<String, String>>
       comments; // List of comments with userID and comment text
   final Set<String>
-      favourites; // List of userIDs who marked the recipe as favourite
+      favourites; // Set of userIDs who marked the recipe as favourite
 
   RecipeModel({
     required this.recipeID,
@@ -39,7 +39,7 @@ class RecipeModel {
       'ratings': ratings,
       'likes': likes.toList(), // Convert Set to List for storage
       'comments': comments, // Store comments as is
-      'favourites': favourites.toList(), // Store favourites as is
+      'favourites': favourites.toList(), // Convert Set to List for storage
     };
   }
 
@@ -56,8 +56,7 @@ class RecipeModel {
       likes: Set<String>.from(map['likes']), // Convert List to Set
       comments: List<Map<String, String>>.from(
           map['comments']), // Convert to List of Maps
-      favourites:
-          Set<String>.from(map['favourites']), // Convert to List of Strings
+      favourites: Set<String>.from(map['favourites']), // Convert List to Set
     );
   }
 

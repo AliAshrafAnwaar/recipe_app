@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recipe_app/data/model/recipe_model.dart';
 
 class FireStoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -55,9 +56,18 @@ class FireStoreService {
   }
 
   // Retrieve all documents from a collection
-  Future<QuerySnapshot> getCollection(String collectionPath) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getCollection(
+      String collectionPath,
+      {List<String>? recipeIDs}) async {
     try {
-      return await _firestore.collection(collectionPath).get();
+      Query<Map<String, dynamic>> query = _firestore.collection(collectionPath);
+
+      if (recipeIDs != null && recipeIDs.isNotEmpty) {
+        // Apply the `where` filter if recipeIDs are provided
+        query = query.where('recipeID', whereIn: recipeIDs);
+      }
+
+      return await query.get();
     } catch (e) {
       print('Error retrieving collection: $e');
       rethrow;
@@ -79,5 +89,40 @@ class FireStoreService {
       print('Error searching documents by title: $e');
       rethrow;
     }
+  }
+
+  // Add a user like to a recipe
+  Future<void> addUserLikeToRecipe(String recipeId, String userId) async {
+    await _firestore.collection('recipes').doc(recipeId).update({
+      'likes': FieldValue.arrayUnion([userId])
+    });
+  }
+
+  // Delete a user like from a recipe
+  Future<void> deleteUserLikeFromRecipe(String recipeId, String userId) async {
+    await _firestore.collection('recipes').doc(recipeId).update({
+      'likes': FieldValue.arrayRemove([userId])
+    });
+  }
+
+  // Add a recipe to user's favourites and update the recipe's favourites
+  Future<void> addRecipeToFavourites(String userId, String recipeId) async {
+    await _firestore.collection('users').doc(userId).update({
+      'favourites': FieldValue.arrayUnion([recipeId])
+    });
+    await _firestore.collection('recipes').doc(recipeId).update({
+      'favourites': FieldValue.arrayUnion([userId])
+    });
+  }
+
+  // Remove a recipe from user's favourites and update the recipe's favourites
+  Future<void> removeRecipeFromFavourites(
+      String userId, String recipeId) async {
+    await _firestore.collection('users').doc(userId).update({
+      'favourites': FieldValue.arrayRemove([recipeId])
+    });
+    await _firestore.collection('recipes').doc(recipeId).update({
+      'favourites': FieldValue.arrayRemove([userId])
+    });
   }
 }

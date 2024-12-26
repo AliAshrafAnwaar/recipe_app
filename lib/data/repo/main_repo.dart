@@ -24,7 +24,7 @@ class MainRepo {
         userID: user.uid,
         email: user.email ?? '',
         username: user.displayName ?? '',
-        favorites: {},
+        favourites: {},
         phoneNumber: '',
         bio: '',
         image: '',
@@ -65,7 +65,7 @@ class MainRepo {
     return null;
   }
 
-// Sign out
+  // Sign out
   Future<void> signOut() async {
     // Sign out from the authentication repository
     await _authRepo.signOut();
@@ -116,8 +116,9 @@ class MainRepo {
         'users', updatedUser.userID, updatedUser.toMap());
   }
 
-  Future<Set<RecipeModel>> getCollection() async {
-    final json = await _firestoreRepo.getCollection('recipes');
+  Future<Set<RecipeModel>> getCollection({List<String>? recipeIDs}) async {
+    final json =
+        await _firestoreRepo.getCollection('recipes', recipeIDs: recipeIDs);
     final data = json.docs
         .map((doc) => RecipeModel.fromMap(doc.data() as Map<String, dynamic>))
         .toSet();
@@ -169,6 +170,10 @@ class MainRepo {
     String? description,
     File? image,
     double? rating,
+    String? userLike,
+    String? userDisLike,
+    String? favouriteRecipeID,
+    String? unFavouriteRecipeID,
   }) async {
     // Fetch the recipe data
     final recipe =
@@ -211,6 +216,28 @@ class MainRepo {
     // Update the user in the 'users' collection
     await _firestoreRepo.updateUser(
         'users', recipe.userID, updatedUser.toMap());
+
+    // Add user like to the recipe if provided
+    if (userLike != null) {
+      await _firestoreRepo.addUserLikeToRecipe(recipeID, userLike);
+    }
+
+    // Remove user like from the recipe if provided
+    if (userDisLike != null) {
+      await _firestoreRepo.deleteUserLikeFromRecipe(recipeID, userDisLike);
+    }
+
+    // Add recipe to user's favourites if provided
+    if (favouriteRecipeID != null) {
+      await _firestoreRepo.addRecipeToFavourites(
+          user.userID, favouriteRecipeID);
+    }
+
+    // Remove recipe from user's favourites if provided
+    if (unFavouriteRecipeID != null) {
+      await _firestoreRepo.removeRecipeFromFavourites(
+          user.userID, unFavouriteRecipeID);
+    }
   }
 
   //search

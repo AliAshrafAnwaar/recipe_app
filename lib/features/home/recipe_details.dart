@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/data/model/recipe_model.dart';
@@ -7,15 +8,16 @@ import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/widgets/rate_recipe_dialog.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
 import 'package:recipe_app/features/profile/widgets/edit_info_dialog.dart';
+import 'package:recipe_app/providers/recipe_provider.dart';
 
-class RecipeDetails extends StatelessWidget {
+class RecipeDetails extends ConsumerWidget {
   const RecipeDetails({super.key, required this.user, required this.recipe});
 
   final UserModel user;
   final RecipeModel recipe;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         backgroundColor: AppColors.secondaryText,
         appBar: AppBar(
@@ -110,14 +112,44 @@ class RecipeDetails extends StatelessWidget {
                           : Image.network(
                               recipe.imageLink,
                             ),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           UserActionButton(
-                              icon: Icons.thumb_up_alt_outlined, text: '1'),
-                          UserActionButton(icon: Icons.comment, text: '3'),
+                              onSelected: () {
+                                ref
+                                    .read(recipeProviderProvider.notifier)
+                                    .updateRecipe(
+                                        recipeID: recipe.recipeID,
+                                        userLikeID: user.userID);
+                              },
+                              onUnSelected: () {
+                                ref
+                                    .read(recipeProviderProvider.notifier)
+                                    .updateRecipe(
+                                        recipeID: recipe.recipeID,
+                                        userDisLikeID: user.userID);
+                              },
+                              isSelected: recipe.likes.contains(user.userID),
+                              icon: Icons.thumb_up_alt_outlined,
+                              filledIcon: Icons.thumb_up_alt,
+                              text: recipe.likes.length.toString()),
+                          const SizedBox(height: 10, child: VerticalDivider()),
                           UserActionButton(
-                              icon: Icons.favorite_border_outlined, text: ''),
+                              onSelected: () {},
+                              onUnSelected: () {},
+                              isSelected: recipe.likes.contains(user.userID),
+                              icon: Icons.comment,
+                              filledIcon: Icons.comment,
+                              text: '3'),
+                          const SizedBox(height: 10, child: VerticalDivider()),
+                          UserActionButton(
+                              onSelected: () {},
+                              onUnSelected: () {},
+                              isSelected: recipe.likes.contains(user.userID),
+                              icon: Icons.favorite_border_outlined,
+                              filledIcon: Icons.favorite,
+                              text: ''),
                         ],
                       ),
                     ],

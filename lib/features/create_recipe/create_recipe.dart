@@ -34,7 +34,7 @@ class _CreateRecipeState extends ConsumerState<CreateRecipe> {
       // Perform the recipe creation logic here
       // For example, upload the image and save the recipe details to Firestore
       final recipeNotifier = ref.read(userProviderProvider.notifier);
-      recipeNotifier.addRecipe(
+      await recipeNotifier.addRecipe(
           _titleController.text, _descriptionController.text, _image);
     }
   }

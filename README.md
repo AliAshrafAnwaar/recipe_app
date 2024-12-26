@@ -1,62 +1,67 @@
 # Recipe App
 
-## Database Selection Report
+## Features
 
-### 1. Selection Criteria
+- **User Authentication**: Sign up, sign in, and sign out functionalities using Firebase Authentication.
+- **User Profiles**: Users can create and update their profiles, including profile pictures and bio.
+- **Recipe Management**: Users can create, update, and delete recipes.
+- **Real-time Updates**: Real-time data synchronization using Firebase Firestore.
+- **Recipe Ratings**: Users can rate recipes.
+- **Recipe Likes**: Users can like and unlike recipes.
+- **Favorites**: Users can add and remove recipes from their favorites.
+- **Comments**: Users can comment on recipes.
+- **Search**: Search for recipes by title.
+- **Offline Support**: Access data offline with Firestore's offline capabilities.
 
-The criteria used to choose the database for this application include:
+## How to Run the Application
 
-- **Scalability**: The ability to handle a growing amount of data and users.
-- **Real-time capabilities**: Support for real-time data synchronization.
-- **Ease of integration**: Compatibility with the Flutter framework and ease of integration.
-- **Cost**: Affordability and cost-effectiveness for both development and production environments.
-- **Security**: Robust security features to protect user data.
-- **Community and support**: Availability of community support and documentation.
+### Prerequisites
 
-### 2. Comparison
+- **Flutter**: Ensure you have Flutter installed on your machine. You can download it from [flutter.dev](https://flutter.dev/docs/get-started/install).
+- **Firebase Account**: Create a Firebase project and configure it for your application. Follow the instructions on [Firebase](https://firebase.google.com/).
 
-#### Chosen Database: Firebase Firestore
+### Steps
 
-**Pros:**
-- **Real-time synchronization**: Firebase Firestore provides real-time data synchronization, which is essential for a responsive user experience.
-- **Scalability**: Firestore is designed to scale automatically with the growth of the application.
-- **Ease of integration**: Firebase offers a Flutter plugin, making it easy to integrate with the Flutter framework.
-- **Security**: Firestore provides robust security rules to protect data.
-- **Offline support**: Firestore supports offline data access, allowing the app to function without an internet connection.
-- **Community and support**: Firebase has extensive documentation and a large community of developers.
+1. **Clone the Repository**:
+   ```sh
+   git clone https://github.com/your-username/recipe_app.git
+   cd recipe_app
+   ```
 
-**Cons:**
-- **Cost**: While Firebase offers a free tier, costs can increase significantly with high usage.
-- **Vendor lock-in**: Using Firebase ties the application to Google's ecosystem.
+2. **Install Dependencies**:
+   ```sh
+   flutter pub get
+   ```
 
-#### Alternative Database: MongoDB
+3. **Configure Firebase**:
+   - Add your `google-services.json` file to the `android/app` directory.
+   - Add your `GoogleService-Info.plist` file to the `ios/Runner` directory.
+   - Ensure your `firebase_options.dart` file is correctly configured.
 
-**Pros:**
-- **Scalability**: MongoDB is highly scalable and can handle large amounts of data.
-- **Flexibility**: MongoDB's schema-less design allows for flexible data modeling.
-- **Community and support**: MongoDB has a large community and extensive documentation.
+4. **Run the Application**:
+   - For Android:
+     ```sh
+     flutter run
+     ```
+   - For iOS:
+     ```sh
+     flutter run
+     ```
 
-**Cons:**
-- **Real-time capabilities**: MongoDB does not natively support real-time data synchronization, requiring additional tools like Change Streams or third-party services.
-- **Integration**: Integrating MongoDB with Flutter requires additional setup and configuration compared to Firebase.
-- **Cost**: While MongoDB offers a free tier, costs can increase with high usage and additional services.
+5. **Build the Application** (Optional):
+   - For Android:
+     ```sh
+     flutter build apk
+     ```
+   - For iOS:
+     ```sh
+     flutter build ios
+     ```
 
-### 3. Implementation Plan
+### Additional Notes
 
-#### Data Structure
+- Ensure your Firebase project is correctly set up with Firestore and Authentication enabled.
+- Update the `pubspec.yaml` file if you add any new dependencies.
+- Follow the Flutter and Firebase documentation for any additional setup or troubleshooting.
 
-The data structure for the Recipe App will include the following collections:
-
-- **Users**: Stores user information such as userID, username, email, phoneNumber, bio, image, recipes (Set of recipe IDs), and favourites (Set of recipe IDs).
-- **Recipes**: Stores recipe information such as recipeID, title, description, userID, imageLink, date, ratings (List of doubles), likes (Set of user IDs), comments (List of maps with userID and comment text), and favourites (Set of user IDs).
-
-#### Integration
-
-1. **Setup Firebase**: Initialize Firebase in the Flutter app by adding the necessary dependencies and configuring Firebase in the `main.dart` file.
-2. **Authentication**: Implement Firebase Authentication to manage user sign-up, sign-in, and sign-out functionalities.
-3. **Firestore Integration**: Use the Firestore plugin to interact with the Firestore database. Implement functions to add, update, retrieve, and delete data from the Firestore collections.
-4. **Real-time Updates**: Leverage Firestore's real-time capabilities to synchronize data across the app in real-time.
-5. **Security Rules**: Define Firestore security rules to protect user data and ensure only authorized access.
-6. **Offline Support**: Enable Firestore's offline support to allow the app to function without an internet connection.
-
-By following this implementation plan, the Recipe App will effectively utilize Firebase Firestore to provide a scalable, real-time, and secure database solution.
+By following these steps, you should be able to run the Recipe App on your local machine.

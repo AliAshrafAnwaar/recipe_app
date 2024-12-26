@@ -91,6 +91,15 @@ class FireStoreService {
     }
   }
 
+  // Delete a recipe from a collection
+  Future<void> deleteRecipe(String collectionPath, String recipeID) async {
+    try {
+      await _firestore.collection(collectionPath).doc(recipeID).delete();
+    } catch (e) {
+      print('Error deleting recipe: $e');
+    }
+  }
+
   // Add a user like to a recipe
   Future<void> addUserLikeToRecipe(String recipeId, String userId) async {
     await _firestore.collection('recipes').doc(recipeId).update({

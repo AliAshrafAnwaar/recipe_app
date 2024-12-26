@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,21 +5,22 @@ import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';
 import 'package:recipe_app/features/shared_widgets/styled_textField.dart';
-import 'package:recipe_app/providers/user_provider.dart';
 
-class CreateRecipe extends ConsumerStatefulWidget {
+class CreateRecipe extends StatefulWidget {
   const CreateRecipe({super.key});
 
   @override
-  ConsumerState<CreateRecipe> createState() => _CreateRecipeState();
+  State<CreateRecipe> createState() => _CreateRecipeState();
 }
 
-class _CreateRecipeState extends ConsumerState<CreateRecipe> {
+class _CreateRecipeState extends State<CreateRecipe> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final ImagePicker picker = ImagePicker();
   File? _image;
+
+  bool _isLoading = false; // Loading state
 
   @override
   void dispose() {
@@ -31,11 +31,33 @@ class _CreateRecipeState extends ConsumerState<CreateRecipe> {
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // Perform the recipe creation logic here
-      // For example, upload the image and save the recipe details to Firestore
-      final recipeNotifier = ref.read(userProviderProvider.notifier);
-      await recipeNotifier.addRecipe(
-          _titleController.text, _descriptionController.text, _image);
+      setState(() {
+        _isLoading = true; // Start loading
+      });
+
+      try {
+        // Simulate the recipe creation logic
+        await Future.delayed(const Duration(seconds: 2)); // Example delay
+
+        // Clear the form after submission
+        _titleController.clear();
+        _descriptionController.clear();
+        setState(() {
+          _image = null;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Recipe created successfully!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false; // Stop loading
+        });
+      }
     }
   }
 
@@ -106,14 +128,15 @@ class _CreateRecipeState extends ConsumerState<CreateRecipe> {
                             ),
                             Expanded(child: const SizedBox()),
                             (_image == null)
-                                ? SizedBox()
+                                ? const SizedBox()
                                 : IconButton(
                                     onPressed: () {
                                       setState(() {
                                         _image = null;
                                       });
                                     },
-                                    icon: Icon(Icons.remove_circle_outline),
+                                    icon:
+                                        const Icon(Icons.remove_circle_outline),
                                     color: Colors.green,
                                   )
                           ],
@@ -121,10 +144,15 @@ class _CreateRecipeState extends ConsumerState<CreateRecipe> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    StyledButton(
-                      onPressed: _submitForm,
-                      text: 'Create Recipe',
-                    ),
+                    _isLoading // Show loading indicator
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                            color: AppColors.mainColor,
+                          ))
+                        : StyledButton(
+                            onPressed: _submitForm,
+                            text: 'Create Recipe',
+                          ),
                   ],
                 ),
               ),

@@ -43,6 +43,11 @@ class FirestoreRepo {
     return await _fireStoreService.searchByTitle(collectionPath, title);
   }
 
+  // Delete a recipe from a collection
+  Future<void> deleteRecipe(String collectionPath, String recipeID) async {
+    await _fireStoreService.deleteRecipe(collectionPath, recipeID);
+  }
+
   // Add a user like to a recipe and update the user's likes
   Future<void> addUserLikeToRecipe(String recipeId, String userId) async {
     await _fireStoreService.addUserLikeToRecipe(recipeId, userId);

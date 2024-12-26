@@ -84,21 +84,21 @@ class Menu extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
+                  // settingsItem(
+                  //   icon: const Icon(
+                  //     Icons.settings,
+                  //     color: AppColors.mainColor,
+                  //   ),
+                  //   title: 'Settings & privacy',
+                  //   onTap: () {},
+                  // ),
+                  // settingsItem(
+                  //   icon: Icon(Icons.help, color: AppColors.mainColor),
+                  //   title: 'Help and support',
+                  //   onTap: () {},
+                  // ),
                   settingsItem(
-                    icon: const Icon(
-                      Icons.settings,
-                      color: AppColors.mainColor,
-                    ),
-                    title: 'Settings & privacy',
-                    onTap: () {},
-                  ),
-                  settingsItem(
-                    icon: Icon(Icons.help, color: AppColors.mainColor),
-                    title: 'Help and support',
-                    onTap: () {},
-                  ),
-                  settingsItem(
-                    icon: Icon(Icons.logout, color: AppColors.mainColor),
+                    icon: const Icon(Icons.logout, color: AppColors.mainColor),
                     title: 'Logout',
                     onTap: () {
                       GoRouter.of(context).go(AppRouter.signIn);

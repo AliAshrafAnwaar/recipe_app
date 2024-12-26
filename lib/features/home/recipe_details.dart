@@ -135,14 +135,14 @@ class RecipeDetails extends ConsumerWidget {
                               filledIcon: Icons.thumb_up_alt,
                               text: recipe.likes.length.toString()),
                           const SizedBox(height: 10, child: VerticalDivider()),
-                          UserActionButton(
-                              onSelected: () {},
-                              onUnSelected: () {},
-                              isSelected: recipe.likes.contains(user.userID),
-                              icon: Icons.comment,
-                              filledIcon: Icons.comment,
-                              text: '3'),
-                          const SizedBox(height: 10, child: VerticalDivider()),
+                          // UserActionButton(
+                          //     onSelected: () {},
+                          //     onUnSelected: () {},
+                          //     isSelected: recipe.likes.contains(user.userID),
+                          //     icon: Icons.comment,
+                          //     filledIcon: Icons.comment,
+                          //     text: '3'),
+                          // const SizedBox(height: 10, child: VerticalDivider()),
                           UserActionButton(
                               onSelected: () {},
                               onUnSelected: () {},

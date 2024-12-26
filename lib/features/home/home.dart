@@ -166,12 +166,14 @@ class Home extends ConsumerWidget {
               const SizedBox(width: 10),
               IconButton(
                 icon: const Icon(Icons.image, color: AppColors.primaryText),
-                onPressed: () {},
+                onPressed: () {
+                  GoRouter.of(context).push(AppRouter.recipeCreate);
+                },
               ),
             ],
           ),
         ),
-        Divider(
+        const Divider(
           color: AppColors.mainColor,
           height: 0,
         ),

@@ -10,8 +10,9 @@ import 'package:recipe_app/features/home/widgets/user_action_button.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
 
 class RecipeCard extends ConsumerStatefulWidget {
-  const RecipeCard({super.key, required this.recipe});
+  const RecipeCard({super.key, required this.recipe, this.userListings});
   final RecipeModel recipe;
+  final bool? userListings;
 
   @override
   ConsumerState<RecipeCard> createState() => _RecipeCardState();
@@ -35,11 +36,11 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
       future: userdetails,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return SizedBox();
+          return const SizedBox();
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error loading user details'));
+          return const Center(child: Text('Error loading user details'));
         } else if (!snapshot.hasData || snapshot.data == null) {
-          return Center(child: Text('User not found'));
+          return const Center(child: Text('User not found'));
         } else {
           final user = snapshot.data!;
           return card(context, widget.recipe, user, ref);
@@ -101,7 +102,7 @@ Widget card(
                   Row(
                     children: [
                       (rating == 0)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Text(
                               rating.toStringAsFixed(
                                   2), // Format rating to 2 decimals
@@ -143,6 +144,41 @@ Widget card(
                   ),
                 ],
               ),
+              const Expanded(child: SizedBox()),
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.more_vert), // Three dots icon
+                onSelected: (String value) {
+                  if (value == 'edit') {
+                    // Handle edit action
+                    print('Edit selected');
+                  } else if (value == 'delete') {
+                    // Handle delete action
+                    print('Delete selected');
+                  }
+                },
+                itemBuilder: (BuildContext context) => [
+                  const PopupMenuItem(
+                    value: 'edit',
+                    child: Row(
+                      children: const [
+                        Icon(Icons.edit, color: AppColors.mainColor),
+                        SizedBox(width: 8),
+                        Text('Edit'),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete, color: AppColors.mainColor),
+                        SizedBox(width: 8),
+                        Text('Delete'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -155,7 +191,7 @@ Widget card(
                 children: [
                   Text(
                     recipe.title,
-                    style: TextStyle(),
+                    style: const TextStyle(),
                   ),
                   const SizedBox(
                     width: 1,
@@ -205,7 +241,7 @@ Widget card(
                 ),
               ),
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -223,14 +259,14 @@ Widget card(
                   filledIcon: Icons.thumb_up_alt,
                   text: recipe.likes.length.toString()),
               const SizedBox(height: 10, child: VerticalDivider()),
-              UserActionButton(
-                  onSelected: () {},
-                  onUnSelected: () {},
-                  isSelected: recipe.likes.contains(user.userID),
-                  icon: Icons.comment,
-                  filledIcon: Icons.comment,
-                  text: '3'),
-              const SizedBox(height: 10, child: VerticalDivider()),
+              // UserActionButton(
+              //     onSelected: () {},
+              //     onUnSelected: () {},
+              //     isSelected: recipe.likes.contains(user.userID),
+              //     icon: Icons.comment,
+              //     filledIcon: Icons.comment,
+              //     text: '3'),
+              // const SizedBox(height: 10, child: VerticalDivider()),
               UserActionButton(
                   onSelected: () {
                     ref.read(recipeProviderProvider.notifier).updateRecipe(

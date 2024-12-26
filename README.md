@@ -11,7 +11,6 @@
 - **Favorites**: Users can add and remove recipes from their favorites.
 - **Comments**: Users can comment on recipes.
 - **Search**: Search for recipes by title.
-- **Offline Support**: Access data offline with Firestore's offline capabilities.
 
 ## How to Run the Application
 

@@ -102,3 +102,38 @@ The data structure for the Recipe App will include the following collections:
 
 By following this implementation plan, the Recipe App will leverage Firebase Firestore to provide a scalable, real-time, and secure database solution while ensuring an optimal user experience.
 
+### Custom Widget: Flutter Rating Bar
+
+#### Selection Criteria
+
+The criteria used to choose the rating widget for this application include:
+
+- **Customizability**: The ability to customize the appearance and behavior of the rating widget.
+- **Ease of integration**: Compatibility with the Flutter framework and ease of integration.
+- **User experience**: Providing a smooth and intuitive user experience for rating recipes.
+- **Real-time updates**: Support for real-time updates to reflect changes in ratings immediately.
+
+#### Customization
+
+The `flutter_rating_bar` widget was chosen for its extensive customization options and ease of integration. Here is how it was customized for the Recipe App:
+
+1. **Initial Setup**:
+   - Added the `flutter_rating_bar` dependency to the `pubspec.yaml` file.
+   - Imported the `flutter_rating_bar` package in the necessary files.
+
+2. **Customization**:
+   - **Item Size**: Set the size of each rating item to 20.0.
+   - **Allow Half Rating**: Enabled half rating support to allow users to rate recipes with half stars.
+   - **Initial Rating**: Set the initial rating based on the average rating of the recipe.
+   - **Custom Icons**: Used custom icons for full, half, and empty ratings to match the app's design.
+   - **Real-time Updates**: Integrated the rating widget with the app's state management solution to handle rating updates and reflect changes in real-time.
+
+3. **Integration**:
+   - Integrated the rating widget into the `RecipeCard` and `RecipeDetails` widgets to allow users to rate recipes directly from these screens.
+   - Implemented functions to update the recipe's rating in Firestore whenever a user rates a recipe.
+
+4. **Testing and Optimization**:
+   - Tested the rating widget on different devices to ensure a smooth user experience.
+   - Optimized the performance of the rating widget to ensure it works seamlessly on lower-end devices.
+
+By customizing the `flutter_rating_bar` widget, the Recipe App provides a user-friendly and visually appealing rating system that enhances the overall user experience.

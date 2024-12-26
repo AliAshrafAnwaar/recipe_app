@@ -1,19 +1,22 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';
 import 'package:recipe_app/features/shared_widgets/styled_textField.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
-class CreateRecipe extends StatefulWidget {
+class CreateRecipe extends ConsumerStatefulWidget {
   const CreateRecipe({super.key});
 
   @override
-  State<CreateRecipe> createState() => _CreateRecipeState();
+  ConsumerState<CreateRecipe> createState() => _CreateRecipeState();
 }
 
-class _CreateRecipeState extends State<CreateRecipe> {
+class _CreateRecipeState extends ConsumerState<CreateRecipe> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -37,7 +40,8 @@ class _CreateRecipeState extends State<CreateRecipe> {
 
       try {
         // Simulate the recipe creation logic
-        await Future.delayed(const Duration(seconds: 2)); // Example delay
+        await ref.read(userProviderProvider.notifier).addRecipe(
+            _titleController.text, _descriptionController.text, _image);
 
         // Clear the form after submission
         _titleController.clear();
@@ -45,7 +49,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
         setState(() {
           _image = null;
         });
-
+        GoRouter.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Recipe created successfully!')),
         );

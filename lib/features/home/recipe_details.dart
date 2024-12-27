@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/styles.dart';
@@ -7,7 +6,6 @@ import 'package:recipe_app/data/model/recipe_model.dart';
 import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/widgets/rate_recipe_dialog.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
-import 'package:recipe_app/features/profile/widgets/edit_info_dialog.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
 
 class RecipeDetails extends ConsumerWidget {

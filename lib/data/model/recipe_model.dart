@@ -1,5 +1,3 @@
-import 'package:recipe_app/data/model/user_model.dart';
-
 class RecipeModel {
   final String recipeID;
   final String title;

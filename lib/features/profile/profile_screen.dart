@@ -108,8 +108,7 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                   child: IconButton(
                     onPressed: () async {
-                      await userNotifier
-                          .profileImageUpload(user ?? user!.copyWith());
+                      await userNotifier.profileImageUpload(user.copyWith());
                     },
                     icon: const Icon(Icons.edit, color: Colors.white),
                     padding: EdgeInsets
@@ -126,7 +125,7 @@ class ProfileScreen extends ConsumerWidget {
             child: Column(
               children: [
                 Text(
-                  (user != null) ? user.username : '',
+                  user.username,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 4),
@@ -142,7 +141,7 @@ class ProfileScreen extends ConsumerWidget {
                   children: [
                     InkWell(
                       child: Text(
-                        (user != null) ? user.recipes.length.toString() : '0',
+                        user.recipes.length.toString(),
                         style: AppTextStyles.secondaryTextStyle,
                       ),
                       onTap: () {
@@ -165,33 +164,25 @@ class ProfileScreen extends ConsumerWidget {
             style: AppTextStyles.secondaryTextStyle,
           ),
           const SizedBox(height: 10),
-          InfoDisplay(
-              text: (user != null) ? user.email : '', icon: Icons.email),
+          InfoDisplay(text: user.email, icon: Icons.email),
           const SizedBox(
               width: 10), // Adjust spacing based on your layout width
           InfoDisplay(
-              text: (user != null)
-                  ? user.phoneNumber.isEmpty
-                      ? 'No phone number'
-                      : user.phoneNumber
-                  : 'No phone number',
+              text: user.phoneNumber.isEmpty
+                  ? 'No phone number'
+                  : user.phoneNumber,
               icon: Icons.phone_android),
           const SizedBox(height: 24),
           buildBioHeader('Bio', onPressed: () {
             showDialog(
               context: context,
               builder: (context) => EditBioDialog(
-                user: user!,
+                user: user,
               ),
             );
           }),
           const SizedBox(height: 10),
-          CustomBioDisplay(
-              text: (user != null)
-                  ? user.bio.isEmpty
-                      ? 'No bio'
-                      : user.bio
-                  : 'No Bio'),
+          CustomBioDisplay(text: user.bio.isEmpty ? 'No bio' : user.bio),
           const SizedBox(height: 28),
         ],
       ),

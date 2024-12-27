@@ -17,7 +17,6 @@ class SearchProvider extends _$SearchProvider {
   Future<void> searchRecipesByTitle(String title) async {
     final Set<RecipeModel> searchedRecipes =
         await repo.searchRecipesByTitle(title);
-    print(searchedRecipes.length);
     state = searchedRecipes.toList();
   }
 }

@@ -1,5 +1,3 @@
-import 'package:recipe_app/data/model/recipe_model.dart';
-
 class UserModel {
   final String userID;
   final String username;

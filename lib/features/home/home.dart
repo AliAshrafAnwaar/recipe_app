@@ -11,11 +11,16 @@ import 'package:recipe_app/providers/recipe_provider.dart';
 import 'package:recipe_app/providers/shared_preference_provider.dart';
 import 'package:recipe_app/providers/user_provider.dart';
 
-class Home extends ConsumerWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Home> createState() => _HomeState();
+}
+
+class _HomeState extends ConsumerState<Home> {
+  @override
+  Widget build(BuildContext context) {
     // Watch the sharedPreferencesProvider
     final prefsAsync = ref.watch(sharedPreferencesProvider);
 

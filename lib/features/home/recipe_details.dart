@@ -9,6 +9,7 @@ import 'package:recipe_app/features/home/widgets/rate_recipe_dialog.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
 import 'package:recipe_app/features/profile/widgets/edit_info_dialog.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
 class RecipeDetails extends ConsumerWidget {
   const RecipeDetails({super.key, required this.user, required this.recipe});
@@ -120,6 +121,9 @@ class RecipeDetails extends ConsumerWidget {
                                 ref
                                     .read(recipeProviderProvider.notifier)
                                     .updateRecipe(
+                                        signedUser: ref
+                                            .watch(userProviderProvider)!
+                                            .userID,
                                         recipeID: recipe.recipeID,
                                         userLikeID: user.userID);
                               },
@@ -127,6 +131,9 @@ class RecipeDetails extends ConsumerWidget {
                                 ref
                                     .read(recipeProviderProvider.notifier)
                                     .updateRecipe(
+                                        signedUser: ref
+                                            .watch(userProviderProvider)!
+                                            .userID,
                                         recipeID: recipe.recipeID,
                                         userDisLikeID: user.userID);
                               },

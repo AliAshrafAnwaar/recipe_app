@@ -77,6 +77,7 @@ class UserProvider extends _$UserProvider {
   Future<void> addRecipe(String title, String description, File? image) async {
     await repo.addRecipe(title, description, state!.userID, image);
     state = await repo.getUser(state!.userID);
+    ref.invalidate(recipeProviderProvider);
   }
 
   Future<UserModel?> getUser(String userID) async {

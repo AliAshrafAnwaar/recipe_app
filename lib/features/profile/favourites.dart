@@ -16,24 +16,7 @@ class Favourites extends ConsumerStatefulWidget {
 class _FavouritesState extends ConsumerState<Favourites> {
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProviderProvider);
-
-    // Handle null user case
-    if (user == null) {
-      return Scaffold(
-        backgroundColor: AppColors.secondaryText,
-        appBar: AppBar(
-          backgroundColor: AppColors.secondaryText,
-          title: Text(
-            'Favourites',
-            style: AppTextStyles.primaryTextStyle,
-          ),
-        ),
-        body: const Center(
-          child: Text('No user found'),
-        ),
-      );
-    }
+    final user = ref.watch(userProviderProvider)!;
 
     List<String> recipeIDs = user.favourites.toList();
 
@@ -70,32 +53,36 @@ class _FavouritesState extends ConsumerState<Favourites> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
-                  child: CircularProgressIndicator(
-                color: AppColors.mainColor,
-              ));
+                child: CircularProgressIndicator(
+                  color: AppColors.mainColor,
+                ),
+              );
             } else if (snapshot.hasError) {
               return Center(
                 child: Text('Error: ${snapshot.error}'),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
-                child: Flexible(
-                  child: Column(
-                    children: [Text('No Recipes'), Flexible(child: ListView())],
-                  ),
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('No Recipes'),
+                  ],
                 ),
               );
             }
 
             // Data is successfully retrieved
-            final recipes = snapshot.data!;
+            final recipes = snapshot.data!.toList();
 
             return ListView.builder(
               itemCount: recipes.length,
               itemBuilder: (context, index) {
-                final recipe =
-                    recipes.elementAt(index); // Accessing set elements
-                return RecipeCard(recipe: recipe);
+                final recipe = recipes[index]; // Accessing set elements
+                return RecipeCard(
+                  recipe: recipe,
+                  signeduserFavourites: true,
+                );
               },
             );
           },

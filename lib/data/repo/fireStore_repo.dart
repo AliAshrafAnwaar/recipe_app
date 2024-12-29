@@ -51,17 +51,11 @@ class FirestoreRepo {
   // Add a user like to a recipe and update the user's likes
   Future<void> addUserLikeToRecipe(String recipeId, String userId) async {
     await _fireStoreService.addUserLikeToRecipe(recipeId, userId);
-    await _fireStoreService.updateUser('users', userId, {
-      'likes': FieldValue.arrayUnion([recipeId])
-    });
   }
 
   // Delete a user like from a recipe and update the user's likes
   Future<void> deleteUserLikeFromRecipe(String recipeId, String userId) async {
     await _fireStoreService.deleteUserLikeFromRecipe(recipeId, userId);
-    await _fireStoreService.updateUser('users', userId, {
-      'likes': FieldValue.arrayRemove([recipeId])
-    });
   }
 
   // Add a recipe to user's favourites and update the recipe's favourites

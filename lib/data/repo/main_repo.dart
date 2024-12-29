@@ -150,8 +150,8 @@ class MainRepo {
       return user;
     });
 
-    final modifiedUser = user.copyWith(recipes: {recipe, ...user.recipes});
-    print(user);
+    final modifiedUser =
+        user.copyWith(recipes: {recipe.recipeID, ...user.recipes});
 
     _firestoreRepo.updateUser('users', userID, modifiedUser.toMap());
   }
@@ -176,57 +176,6 @@ class MainRepo {
     String? favouriteRecipeID,
     String? unFavouriteRecipeID,
   }) async {
-    // Fetch the recipe data
-    final recipe =
-        await _firestoreRepo.getUser('recipes', recipeID).then((result) {
-      RecipeModel recipe =
-          RecipeModel.fromMap(result.data() as Map<String, dynamic>);
-      return recipe;
-    });
-
-    // Fetch the user data
-    final recipeUser =
-        await _firestoreRepo.getUser('users', recipe.userID).then((result) {
-      UserModel user = UserModel.fromMap(result.data() as Map<String, dynamic>);
-      return user;
-    });
-
-    UserModel user;
-    if (actionUser != null) {
-      user = await _firestoreRepo.getUser('users', actionUser).then((result) {
-        UserModel user =
-            UserModel.fromMap(result.data() as Map<String, dynamic>);
-        return user;
-      });
-    }
-
-    // Create an updated recipe object
-    final RecipeModel updatedRecipe = recipe.copyWith(
-      title: title ?? recipe.title,
-      description: description ?? recipe.description,
-      imageLink:
-          image != null ? await postImageUpload(image) : recipe.imageLink,
-      ratings: rating != null
-          ? [...recipe.ratings, rating.toDouble()]
-          : recipe.ratings,
-    );
-
-    // Update the recipe in the 'recipes' collection
-    await _firestoreRepo.updateUser('recipes', recipeID, updatedRecipe.toMap());
-
-    // Update the user data
-    final updatedRecipes = recipeUser.recipes.map((recipe) {
-      return recipe.recipeID == recipeID ? updatedRecipe : recipe;
-    }).toList();
-
-    final UserModel updatedUser = recipeUser.copyWith(
-      recipes: updatedRecipes.toSet(),
-    );
-
-    // Update the user in the 'users' collection
-    await _firestoreRepo.updateUser(
-        'users', recipe.userID, updatedUser.toMap());
-
     // Add user like to the recipe if provided
     if (userLike != null) {
       await _firestoreRepo.addUserLikeToRecipe(recipeID, userLike);
@@ -239,8 +188,6 @@ class MainRepo {
 
     // Add recipe to user's favourites if provided
     if (favouriteRecipeID != null) {
-      print(actionUser);
-      print(favouriteRecipeID);
       await _firestoreRepo.addRecipeToFavourites(
           actionUser!, favouriteRecipeID);
     }

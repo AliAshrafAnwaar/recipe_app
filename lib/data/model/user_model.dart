@@ -7,7 +7,7 @@ class UserModel {
   final String phoneNumber;
   final String email;
   final String bio; // Added bio field
-  final Set<RecipeModel> recipes;
+  final Set<String> recipes; // Changed recipes field to Set<String>
   final Set<String> favourites; // Changed favourites field to Set<String>
 
   UserModel({
@@ -17,7 +17,7 @@ class UserModel {
     required this.phoneNumber,
     required this.email,
     required this.bio, // Added bio field
-    required this.recipes,
+    required this.recipes, // Changed recipes field to Set<String>
     required this.favourites, // Changed favourites field to Set<String>
   });
 
@@ -30,7 +30,7 @@ class UserModel {
       'image': image,
       'email': email,
       'bio': bio, // Added bio field
-      'recipes': recipes.map((recipe) => recipe.toMap()).toList(),
+      'recipes': recipes.toList(), // Changed recipes field to Set<String>
       'favourites':
           favourites.toList(), // Changed favourites field to Set<String>
     };
@@ -45,9 +45,8 @@ class UserModel {
       phoneNumber: map['phoneNumber'],
       email: map['email'],
       bio: map['bio'], // Added bio field
-      recipes: (map['recipes'] as List)
-          .map((recipe) => RecipeModel.fromMap(recipe))
-          .toSet(),
+      recipes: Set<String>.from(
+          map['recipes']), // Changed recipes field to Set<String>
       favourites: Set<String>.from(
           map['favourites']), // Changed favourites field to Set<String>
     );
@@ -61,7 +60,7 @@ class UserModel {
     String? phoneNumber,
     String? email,
     String? bio,
-    Set<RecipeModel>? recipes,
+    Set<String>? recipes, // Changed recipes field to Set<String>
     Set<String>? favourites, // Changed favourites field to Set<String>
   }) {
     return UserModel(
@@ -71,7 +70,7 @@ class UserModel {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       email: email ?? this.email,
       bio: bio ?? this.bio,
-      recipes: recipes ?? this.recipes,
+      recipes: recipes ?? this.recipes, // Changed recipes field to Set<String>
       favourites: favourites ??
           this.favourites, // Changed favourites field to Set<String>
     );

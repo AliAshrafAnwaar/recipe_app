@@ -6,6 +6,7 @@ import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/data/model/recipe_model.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
+import 'package:recipe_app/providers/user_provider.dart';
 
 class RateRecipeDialog extends ConsumerStatefulWidget {
   final RecipeModel recipe;
@@ -35,6 +36,7 @@ class _RateRecipeDialogState extends ConsumerState<RateRecipeDialog> {
       // Save the updated ratings using your provider or repository
       final recipeNotifier = ref.read(recipeProviderProvider.notifier);
       await recipeNotifier.updateRecipe(
+        signedUser: ref.watch(userProviderProvider)!.userID,
         recipeID: widget.recipe.recipeID,
         rating: currentRating,
       );

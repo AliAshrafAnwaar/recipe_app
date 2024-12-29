@@ -22,6 +22,14 @@ class RecipeProvider extends _$RecipeProvider {
     ref.notifyListeners();
   }
 
+  Future<void> deleteRecipe(String signedInUser, String recipeID) async {
+    await _repo.deleteRecipe(signedInUser, recipeID);
+    await ref
+        .read(userProviderProvider.notifier)
+        .sharedPreferenceLogin(signedInUser);
+    await getRecipes();
+  }
+
   // Get a user's details
   Future<UserModel?> getUser(String userID) async {
     return await _repo.getUser(userID);
@@ -42,8 +50,10 @@ class RecipeProvider extends _$RecipeProvider {
   }) async {
     await _repo.updateRecipe(
         recipeID: recipeID,
-        rating: rating,
         actionUser: signedUser,
+        rating: rating,
+        title: title,
+        description: description,
         userLike: userLikeID,
         userDisLike: userDisLikeID,
         favouriteRecipeID: favouriteRecipeID,
@@ -51,5 +61,6 @@ class RecipeProvider extends _$RecipeProvider {
     await ref
         .read(userProviderProvider.notifier)
         .sharedPreferenceLogin(signedUser);
+    await getRecipes();
   }
 }

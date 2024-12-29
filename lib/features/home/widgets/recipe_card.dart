@@ -162,7 +162,11 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
                           // Handle edit action
                           print('Edit selected');
                         } else if (value == 'delete') {
-                          // Handle delete action
+                          ref
+                              .read(recipeProviderProvider.notifier)
+                              .deleteRecipe(
+                                  ref.watch(userProviderProvider)!.userID,
+                                  recipe.recipeID);
                           print('Delete selected');
                         }
                       },
@@ -198,10 +202,16 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    recipe.title,
-                    style: const TextStyle(),
+                  Flexible(
+                    child: Text(
+                      recipe.title,
+                      style: const TextStyle(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   const SizedBox(
                     width: 1,

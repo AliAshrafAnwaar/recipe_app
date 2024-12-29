@@ -43,8 +43,8 @@ class FirestoreRepo {
   }
 
   // Delete a recipe from a collection
-  Future<void> deleteRecipe(String collectionPath, String recipeID) async {
-    await _fireStoreService.deleteRecipe(collectionPath, recipeID);
+  Future<void> deleteRecipe(String signedInUser, String recipeID) async {
+    await _fireStoreService.deleteRecipe(signedInUser, recipeID);
   }
 
   // Add a user like to a recipe and update the user's likes
@@ -66,5 +66,10 @@ class FirestoreRepo {
   Future<void> removeRecipeFromFavourites(
       String userId, String recipeId) async {
     await _fireStoreService.removeRecipeFromFavourites(userId, recipeId);
+  }
+
+  // Delete a user like from a recipe
+  Future<void> addRecipeRatingToUser(String recipeId, double rating) async {
+    await _fireStoreService.addUserRatingToRecipe(recipeId, rating);
   }
 }

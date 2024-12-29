@@ -107,12 +107,12 @@ class RecipeDetails extends ConsumerWidget {
                         ),
                       ),
                       (recipe.imageLink.isEmpty)
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Image.network(
                               recipe.imageLink,
                             ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           UserActionButton(
                               onSelected: () {
@@ -123,7 +123,10 @@ class RecipeDetails extends ConsumerWidget {
                                             .watch(userProviderProvider)!
                                             .userID,
                                         recipeID: recipe.recipeID,
-                                        userLikeID: user.userID);
+                                        userLikeID: ref
+                                            .watch(userProviderProvider)!
+                                            .userID);
+                                ref.invalidate(recipeProviderProvider);
                               },
                               onUnSelected: () {
                                 ref
@@ -133,9 +136,13 @@ class RecipeDetails extends ConsumerWidget {
                                             .watch(userProviderProvider)!
                                             .userID,
                                         recipeID: recipe.recipeID,
-                                        userDisLikeID: user.userID);
+                                        userDisLikeID: ref
+                                            .watch(userProviderProvider)!
+                                            .userID);
+                                ref.invalidate(recipeProviderProvider);
                               },
-                              isSelected: recipe.likes.contains(user.userID),
+                              isSelected: recipe.likes.contains(
+                                  ref.watch(userProviderProvider)!.userID),
                               icon: Icons.thumb_up_alt_outlined,
                               filledIcon: Icons.thumb_up_alt,
                               text: recipe.likes.length.toString()),
@@ -149,9 +156,34 @@ class RecipeDetails extends ConsumerWidget {
                           //     text: '3'),
                           // const SizedBox(height: 10, child: VerticalDivider()),
                           UserActionButton(
-                              onSelected: () {},
-                              onUnSelected: () {},
-                              isSelected: recipe.likes.contains(user.userID),
+                              onSelected: () async {
+                                await ref
+                                    .read(recipeProviderProvider.notifier)
+                                    .updateRecipe(
+                                        recipeID: recipe.recipeID,
+                                        signedUser: ref
+                                            .watch(userProviderProvider)!
+                                            .userID,
+                                        favouriteRecipeID: recipe.recipeID);
+                                ref.invalidate(recipeProviderProvider);
+                              },
+                              onUnSelected: () async {
+                                await ref
+                                    .read(recipeProviderProvider.notifier)
+                                    .updateRecipe(
+                                        recipeID: recipe.recipeID,
+                                        signedUser: ref
+                                            .watch(userProviderProvider)!
+                                            .userID,
+                                        unfavouriteRecipeID: recipe.recipeID);
+
+                                ref.invalidate(recipeProviderProvider);
+                              },
+                              isSelected: ref
+                                  .watch(userProviderProvider)!
+                                  .favourites
+                                  .toList()
+                                  .contains(recipe.recipeID),
                               icon: Icons.favorite_border_outlined,
                               filledIcon: Icons.favorite,
                               text: ''),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recipe_app/data/model/recipe_model.dart';
 
 class FireStoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -91,9 +92,12 @@ class FireStoreService {
   }
 
   // Delete a recipe from a collection
-  Future<void> deleteRecipe(String collectionPath, String recipeID) async {
+  Future<void> deleteRecipe(String signedInUser, String recipeID) async {
     try {
-      await _firestore.collection(collectionPath).doc(recipeID).delete();
+      await _firestore.collection('recipes').doc(recipeID).delete();
+      await _firestore.collection('users').doc(signedInUser).update({
+        'recipes': FieldValue.arrayRemove([recipeID])
+      });
     } catch (e) {
       print('Error deleting recipe: $e');
     }
@@ -132,6 +136,13 @@ class FireStoreService {
     });
     await _firestore.collection('recipes').doc(recipeId).update({
       'favourites': FieldValue.arrayRemove([userId])
+    });
+  }
+
+  // Add a user rating to recipe
+  Future<void> addUserRatingToRecipe(String recipeId, double rating) async {
+    await _firestore.collection('recipes').doc(recipeId).update({
+      'ratings': FieldValue.arrayUnion([rating])
     });
   }
 }

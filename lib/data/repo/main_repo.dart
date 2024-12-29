@@ -122,9 +122,6 @@ class MainRepo {
     final data = json.docs
         .map((doc) => RecipeModel.fromMap(doc.data() as Map<String, dynamic>))
         .toSet();
-    for (RecipeModel recipe in data) {
-      print(recipe.date);
-    }
     return data;
   }
 
@@ -154,6 +151,10 @@ class MainRepo {
         user.copyWith(recipes: {recipe.recipeID, ...user.recipes});
 
     _firestoreRepo.updateUser('users', userID, modifiedUser.toMap());
+  }
+
+  Future<void> deleteRecipe(String signedInUser, String recipeID) async {
+    _firestoreRepo.deleteRecipe(signedInUser, recipeID);
   }
 
   Future<UserModel?> getUser(String userID) async {
@@ -196,6 +197,10 @@ class MainRepo {
     if (unFavouriteRecipeID != null) {
       await _firestoreRepo.removeRecipeFromFavourites(
           actionUser!, unFavouriteRecipeID);
+    }
+
+    if (rating != null) {
+      await _firestoreRepo.addRecipeRatingToUser(recipeID, rating);
     }
   }
 

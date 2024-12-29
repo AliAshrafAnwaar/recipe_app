@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:recipe_app/data/model/recipe_model.dart';
 import 'package:recipe_app/data/services/fireStore_services/fireStore_services.dart';
 
 class FirestoreRepo {

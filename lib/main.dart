@@ -11,15 +11,14 @@ void main() async {
   );
   runApp(
     const ProviderScope(
-      child: JopFinderApp(),
+      child: RecipeApp(),
     ),
   );
 }
 
-class JopFinderApp extends StatelessWidget {
-  const JopFinderApp({super.key});
+class RecipeApp extends StatelessWidget {
+  const RecipeApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

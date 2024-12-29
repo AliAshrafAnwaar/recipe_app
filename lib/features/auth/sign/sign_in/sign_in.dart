@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
 import 'package:recipe_app/core/utils/app_router.dart';
-import 'package:recipe_app/data/repo/main_repo.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/google_facebook_sign.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/styled_text_navigation_to_from_signin.dart';
 import 'package:recipe_app/features/auth/sign/sign_up/widgets/text_between_divider.dart';

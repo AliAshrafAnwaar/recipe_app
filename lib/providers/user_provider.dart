@@ -23,12 +23,11 @@ class UserProvider extends _$UserProvider {
   Future<bool> signIn(String email, String password) async {
     isLoading = true;
     final user = await repo.signIn(email, password);
+    isLoading = false;
     if (user != null) {
       state = user;
-      isLoading = false;
       return true;
     } else {
-      isLoading = false;
       return false;
     }
   }
@@ -44,34 +43,33 @@ class UserProvider extends _$UserProvider {
   }
 
   Future<void> signOut(BuildContext context) async {
-    // sign out and navigate to the sign in screen
-    repo.signOut().then((value) {
-      GoRouter.of(context).go(AppRouter.signIn);
-    });
+    await repo.signOut();
+    GoRouter.of(context).go(AppRouter.signIn);
   }
 
-  // Go to the signin screen
-
   Future<void> profileImageUpload(UserModel user) async {
-    String url = await repo.profileImageUpload(user);
-    state = state!.copyWith(image: url);
+    final String url = await repo.profileImageUpload(user);
+    state = state?.copyWith(image: url);
     ref.invalidate(recipeProviderProvider);
   }
 
-  Future<void> updateUserDetails(
-      {required UserModel user,
-      String? newUsername,
-      String? newPhoneNumber,
-      String? newBio}) async {
+  Future<void> updateUserDetails({
+    required UserModel user,
+    String? newUsername,
+    String? newPhoneNumber,
+    String? newBio,
+  }) async {
     await repo.updateUserDetails(
-        user: user,
-        newUsername: newUsername ?? user.username,
-        newPhoneNumber: newPhoneNumber ?? user.phoneNumber,
-        newBio: newBio ?? user.bio);
-    state = state!.copyWith(
-        username: newUsername ?? user.username,
-        phoneNumber: newPhoneNumber ?? user.phoneNumber,
-        bio: newBio ?? user.bio);
+      user: user,
+      newUsername: newUsername ?? user.username,
+      newPhoneNumber: newPhoneNumber ?? user.phoneNumber,
+      newBio: newBio ?? user.bio,
+    );
+    state = state?.copyWith(
+      username: newUsername ?? user.username,
+      phoneNumber: newPhoneNumber ?? user.phoneNumber,
+      bio: newBio ?? user.bio,
+    );
   }
 
   Future<void> addRecipe(String title, String description, File? image) async {
@@ -84,7 +82,6 @@ class UserProvider extends _$UserProvider {
     return await repo.getUser(userID);
   }
 
-  //shared preference login
   Future<bool> sharedPreferenceLogin(String userID) async {
     state = await getUser(userID);
     return true;

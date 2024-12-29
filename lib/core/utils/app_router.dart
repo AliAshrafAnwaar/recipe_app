@@ -14,7 +14,6 @@ import 'package:recipe_app/features/search/search.dart';
 
 class AppRouter {
   static const splash = "/splash";
-  static const onBoardingScreens = "/onBoardingScreens";
   static const signUp = "/signUp";
   static const signIn = "/signIn";
   static const forgetPassword = "/forgetPassword";
@@ -22,20 +21,10 @@ class AppRouter {
   static const menuScreen = "/menu";
   static const recipeDetails = "/recipeDetails";
   static const recipeCreate = "/recipeCreate";
-  static const jobPostScreen = "/jobPostScreen";
   static const profileScreen = "/profileScreen";
-  static const resumeUploadScreen = "/resumeUploadScreen";
-  static const applicationsScreen = "/applicationsScreen";
-  static const allApplicantsScreen = "/allApplicantsScreen";
-  static const myPostedJob = "/myPostedJob";
-  static const successScreen = "/successScreen";
   static const recipeSearchScreen = "/recipeSearchScreen";
-  static const seeAllPage = "/seeAllPage";
-  static const pageViewModel = "/pageViewModel";
-  static const recentSearches = "/recentSearches";
   static const favouriteList = "/favouriteList";
   static const userListings = "/userListings";
-  static const othersProfileScreen = "/othersProfileScreen";
 
   static GoRouter router = GoRouter(
     initialLocation: splash,
@@ -53,18 +42,13 @@ class AppRouter {
         name: splash,
         builder: (context, state) => const Splash(),
       ),
-      // GoRoute(
-      //   name: onBoardingScreens,
-      //   path: onBoardingScreens,
-      //   builder: (context, state) => const OnBoardingScreen1(),
-      // ),
       GoRoute(
         path: signUp,
         name: signUp,
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
           child: const SignUpScreen(),
-          transitionsBuilder: _fadeTransition, // Slide transition
+          transitionsBuilder: _fadeTransition,
         ),
       ),
       GoRoute(
@@ -82,7 +66,7 @@ class AppRouter {
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
           child: const ForgetPasswordScreen(),
-          transitionsBuilder: _slideTransition, // Slide transition
+          transitionsBuilder: _slideTransition,
         ),
       ),
       GoRoute(
@@ -96,88 +80,30 @@ class AppRouter {
         builder: (context, state) => const Search(),
       ),
       GoRoute(
-          path: favouriteList,
-          name: favouriteList,
-          builder: (context, state) => const Favourites()),
+        path: favouriteList,
+        name: favouriteList,
+        builder: (context, state) => const Favourites(),
+      ),
       GoRoute(
-          path: userListings,
-          name: userListings,
-          builder: (context, state) => const UserListings()),
-      // GoRoute(
-      //   path: recentSearches,
-      //   name: recentSearches,
-      //   builder: (context, state) => const RecentSearchesScreen(),
-      // ),
-      // GoRoute(
-      //   path: othersProfileScreen,
-      //   name: othersProfileScreen,
-      //   builder: (context, state) {
-      //     final Map<String, dynamic> extra =
-      //         state.extra as Map<String, dynamic>;
-      //     return OthersProfileScreen(
-      //       user: extra['user']as List<UserModel>,
-      //       index: extra['index'] as int,
-      //     );
-      //   },
-      // ),
+        path: userListings,
+        name: userListings,
+        builder: (context, state) => const UserListings(),
+      ),
       GoRoute(
         path: recipeCreate,
         name: recipeCreate,
-        builder: (context, state) => CreateRecipe(),
+        builder: (context, state) => const CreateRecipe(),
       ),
-
-      // GoRoute(
-      //   path: successScreen,
-      //   name: successScreen,
-      //   builder: (context, state) => SuccefullScreen(),
-      // ),
-      // GoRoute(
-      //   path: jobPostScreen,
-      //   name: jobPostScreen,
-      //   builder: (context, state) => JobPostScreen(),
-      // ),
-      // GoRoute(
-      //   path: seeAllPage,
-      //   name: seeAllPage,
-      //   builder: (context, state) => SeeAllPage(),
-      // ),
-
-      // GoRoute(
-      //   path: myPostedJob,
-      //   name: myPostedJob,
-      //   builder: (context, state) => const MyPostedJob(),
-      // ),
-      // GoRoute(
-      //     path: pageViewModel,
-      //     name: pageViewModel,
-      //     builder: (context, state) => const PageViewModel()),
-      // GoRoute(
-      //   path: allApplicantsScreen,
-      //   name: allApplicantsScreen,
-      //   builder: (context, state) =>
-      //       AllApplicantsScreen(jobId: state.extra as String),
-      // ),
-      // //bodaSayed
       GoRoute(
-          path: profileScreen,
-          name: profileScreen,
-          builder: (context, state) => ProfileScreen()),
-      // GoRoute(
-      //     path: resumeUploadScreen,
-      //     name: resumeUploadScreen,
-      //     builder: (context, state) => BlocProvider.value(
-      //           value: profileCubit,
-      //           child: ResumeUploadScreen(),
-      //         )),
+        path: profileScreen,
+        name: profileScreen,
+        builder: (context, state) => const ProfileScreen(),
+      ),
       GoRoute(
-          path: menuScreen,
-          name: menuScreen,
-          builder: (context, state) => const Menu()),
-      // GoRoute(
-      //     path: recipeDetails,
-      //     name: recipeDetails,
-      //     builder: (context, state) => const RecipeDetails()),
-      // //end bodaSayed
+        path: menuScreen,
+        name: menuScreen,
+        builder: (context, state) => const Menu(),
+      ),
     ],
   );
 

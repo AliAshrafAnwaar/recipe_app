@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
+import 'package:recipe_app/core/utils/styles.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   const CustomAlertDialog(
@@ -19,14 +20,13 @@ class CustomAlertDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: AppTextStyles.primaryTextStyle,
         textAlign: TextAlign.start,
       ),
       content: SingleChildScrollView(
         child: Text(
           body,
           textAlign: TextAlign.start,
-          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -48,7 +48,7 @@ class CustomAlertDialog extends StatelessWidget {
             Expanded(
               child: TextButton(
                 style: TextButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
+                  backgroundColor: AppColors.mainColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4.0),
                   ),

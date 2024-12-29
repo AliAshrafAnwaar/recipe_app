@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/core/constants/app_colors.dart';
-import 'package:recipe_app/core/utils/styles.dart';
 
 class InfoDisplay extends StatelessWidget {
   final String text;

@@ -7,7 +7,6 @@ import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/shared_widgets/styled_button.dart';
 import 'package:recipe_app/providers/user_provider.dart';
-import 'package:recipe_app/data/repo/main_repo.dart';
 
 class EditInfoDialog extends ConsumerStatefulWidget {
   final UserModel user;

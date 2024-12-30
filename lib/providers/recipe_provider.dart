@@ -13,6 +13,7 @@ class RecipeProvider extends _$RecipeProvider {
   @override
   Set<RecipeModel>? build() {
     getRecipes();
+    ref.keepAlive();
     return {};
   }
 

@@ -62,9 +62,12 @@ class _HomeState extends ConsumerState<Home> {
                   children: [
                     appBarRow(context),
                     profilePostRow(context, user),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Flexible(
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 600),
+                        constraints: const BoxConstraints(maxWidth: 1000),
                         child: RefreshIndicator(
                           color: AppColors.mainColor,
                           onRefresh: () async {

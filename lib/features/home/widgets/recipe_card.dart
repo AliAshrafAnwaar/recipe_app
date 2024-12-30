@@ -8,7 +8,6 @@ import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/recipe_details.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
 import 'package:recipe_app/features/profile/widgets/edit_info_dialog.dart';
-import 'package:recipe_app/features/shared_widgets/custum_alert_dialog.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
 import 'package:recipe_app/providers/user_provider.dart';
 
@@ -51,7 +50,6 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
           return const Center(child: Text('User not found'));
         } else {
           final user = snapshot.data!;
-          print(user.userID);
           return card(context, widget.recipe, user, ref,
               widget.signedUserListings, widget.signeduserFavourites);
         }
@@ -60,7 +58,7 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
   }
 
   @override
-  bool get wantKeepAlive => false; // Ensure the state is kept alive
+  bool get wantKeepAlive => true; // Ensure the state is kept alive
 }
 
 Widget card(BuildContext context, RecipeModel recipe, UserModel user,

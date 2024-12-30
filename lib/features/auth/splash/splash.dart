@@ -54,7 +54,7 @@ class _SplashState extends ConsumerState<Splash> {
             child: Container(
           color: AppColors.primaryColor,
           padding: const EdgeInsets.all(100),
-          child: Center(
+          child: const Center(
             child:
                 Icon(Icons.emoji_food_beverage, size: 100, color: Colors.white),
           ),

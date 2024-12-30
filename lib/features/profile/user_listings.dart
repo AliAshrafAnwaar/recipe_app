@@ -5,7 +5,6 @@ import 'package:recipe_app/core/utils/styles.dart';
 import 'package:recipe_app/data/model/recipe_model.dart';
 import 'package:recipe_app/features/home/widgets/recipe_card.dart';
 import 'package:recipe_app/providers/user_provider.dart';
-import 'package:recipe_app/providers/recipe_provider.dart';
 
 class UserListings extends ConsumerStatefulWidget {
   const UserListings({super.key});

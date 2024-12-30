@@ -165,7 +165,7 @@ class Menu extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   width: double.infinity,
                 ),
                 icon,

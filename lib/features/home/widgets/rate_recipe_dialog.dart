@@ -11,7 +11,7 @@ import 'package:recipe_app/providers/user_provider.dart';
 class RateRecipeDialog extends ConsumerStatefulWidget {
   final RecipeModel recipe;
 
-  const RateRecipeDialog({required this.recipe, Key? key}) : super(key: key);
+  const RateRecipeDialog({required this.recipe, super.key});
 
   @override
   _RateRecipeDialogState createState() => _RateRecipeDialogState();

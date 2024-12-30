@@ -47,6 +47,11 @@ class FirestoreRepo {
     await _fireStoreService.deleteRecipe(signedInUser, recipeID);
   }
 
+  Future<void> editRecipe(
+      String recipeID, String title, String description) async {
+    await _fireStoreService.editRecipe(recipeID, title, description);
+  }
+
   // Add a user like to a recipe and update the user's likes
   Future<void> addUserLikeToRecipe(String recipeId, String userId) async {
     await _fireStoreService.addUserLikeToRecipe(recipeId, userId);

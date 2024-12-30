@@ -90,6 +90,15 @@ class FireStoreService {
     }
   }
 
+  // Edit a recipe
+  Future<void> editRecipe(
+      String recipeId, String title, String description) async {
+    await _firestore.collection('recipes').doc(recipeId).update({
+      'title': title,
+      'description': description,
+    });
+  }
+
   // Delete a recipe from a collection
   Future<void> deleteRecipe(String signedInUser, String recipeID) async {
     try {

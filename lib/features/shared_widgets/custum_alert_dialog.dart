@@ -33,18 +33,6 @@ class CustomAlertDialog extends StatelessWidget {
       actions: <Widget>[
         Row(
           children: [
-            // Expanded(
-            //   child: TextButton(
-            //     style: TextButton.styleFrom(
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(4.0),
-            //       ),
-            //     ),
-            //     child: const Text('Cancel',
-            //         style: TextStyle(color: Colors.black, fontSize: 16)),
-            //     onPressed: () => Navigator.of(context).pop(),
-            //   ),
-            // ),
             Expanded(
               child: TextButton(
                 style: TextButton.styleFrom(

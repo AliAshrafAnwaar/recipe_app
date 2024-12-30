@@ -54,7 +54,7 @@ class _StyledTextfieldState extends State<StyledTextField> {
       onChanged: (widget.isNotifier == true) ? (e) {} : null,
       cursorColor: AppColors.mainColor,
       style: (widget.isWhite == true)
-          ? TextStyle(color: Colors.white)
+          ? const TextStyle(color: Colors.white)
           : Theme.of(context).textTheme.bodyMedium,
       controller: widget.controller,
       validator: (value) {
@@ -75,10 +75,10 @@ class _StyledTextfieldState extends State<StyledTextField> {
         isDense: (widget.isWhite == true) ? true : false,
         hintText: widget.hint,
         contentPadding: (widget.isWhite == true)
-            ? EdgeInsets.all(0)
+            ? const EdgeInsets.all(0)
             : const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
         labelStyle: (widget.isWhite == true)
-            ? TextStyle(color: Colors.white)
+            ? const TextStyle(color: Colors.white)
             : Theme.of(context).textTheme.headlineMedium,
         hintStyle: (widget.isWhite == true)
             ? TextStyle(color: Colors.white.withOpacity(0.5))
@@ -93,7 +93,7 @@ class _StyledTextfieldState extends State<StyledTextField> {
                     : AppColors.hintColor,
                 size: 20,
               ),
-        prefixIconConstraints: BoxConstraints(
+        prefixIconConstraints: const BoxConstraints(
           minWidth: 40, // Ensure enough space for the icon
           minHeight: 0, // Remove extra height constraint
         ),

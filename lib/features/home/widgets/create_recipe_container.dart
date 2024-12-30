@@ -20,7 +20,7 @@ class CreateRecipeContainer extends StatelessWidget {
             color: AppColors.mainColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(30),
           ),
-          child: Text('Recipe in mind?'),
+          child: const Text('Recipe in mind?'),
         ),
       ),
     );

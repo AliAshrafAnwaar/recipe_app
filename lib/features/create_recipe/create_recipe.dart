@@ -130,7 +130,7 @@ class _CreateRecipeState extends ConsumerState<CreateRecipe> {
                                     _image != null ? Colors.green : Colors.grey,
                               ),
                             ),
-                            Expanded(child: const SizedBox()),
+                            const Expanded(child: SizedBox()),
                             (_image == null)
                                 ? const SizedBox()
                                 : IconButton(

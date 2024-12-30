@@ -44,7 +44,7 @@ class WelcomeText extends StatelessWidget {
                 (crossAxisAlignment == null || crossAxisAlignment == "start")
                     ? TextAlign.start
                     : TextAlign.center,
-            style: TextStyle(color: AppColors.primaryColor)),
+            style: const TextStyle(color: AppColors.primaryColor)),
       ],
     );
   }

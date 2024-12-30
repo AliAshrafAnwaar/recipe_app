@@ -177,6 +177,10 @@ class MainRepo {
     String? favouriteRecipeID,
     String? unFavouriteRecipeID,
   }) async {
+    // title and descrpition
+    if (title != null && description != null) {
+      await _firestoreRepo.editRecipe(recipeID, title, description);
+    }
     // Add user like to the recipe if provided
     if (userLike != null) {
       await _firestoreRepo.addUserLikeToRecipe(recipeID, userLike);

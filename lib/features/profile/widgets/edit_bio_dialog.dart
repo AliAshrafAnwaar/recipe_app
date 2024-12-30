@@ -25,7 +25,7 @@ class EditBioDialog extends ConsumerWidget {
               hint: "Enter your new bio",
             ),
             const SizedBox(height: 16),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: StyledButton(
                 text: "Save Changes",

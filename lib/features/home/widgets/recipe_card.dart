@@ -7,6 +7,8 @@ import 'package:recipe_app/data/model/recipe_model.dart';
 import 'package:recipe_app/data/model/user_model.dart';
 import 'package:recipe_app/features/home/recipe_details.dart';
 import 'package:recipe_app/features/home/widgets/user_action_button.dart';
+import 'package:recipe_app/features/profile/widgets/edit_info_dialog.dart';
+import 'package:recipe_app/features/shared_widgets/custum_alert_dialog.dart';
 import 'package:recipe_app/providers/recipe_provider.dart';
 import 'package:recipe_app/providers/user_provider.dart';
 
@@ -64,7 +66,7 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
 Widget card(BuildContext context, RecipeModel recipe, UserModel user,
     WidgetRef ref, bool? userListing, bool? signeduserFavourites) {
   // Safely calculate the rating or default to 0.0 if ratings are empty
-  double _roundToQuarter(double value) {
+  double roundToQuarter(double value) {
     return (value * 4).round() / 4; // Multiply by 4, round, and divide by 4
   }
 
@@ -121,8 +123,8 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
                             ),
                       RatingBar.builder(
                         itemSize: 20,
-                        initialRating: _roundToQuarter(
-                            rating), // Use the safe rating value
+                        initialRating:
+                            roundToQuarter(rating), // Use the safe rating value
                         minRating: 0,
                         maxRating: 1,
                         direction: Axis.horizontal,
@@ -157,9 +159,16 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
                   ? const SizedBox()
                   : PopupMenuButton<String>(
                       icon: const Icon(Icons.more_vert), // Three dots icon
-                      onSelected: (String value) {
+                      onSelected: (String value) async {
                         if (value == 'edit') {
                           // Handle edit action
+                          showDialog(
+                            context: context,
+                            builder: (context) => EditInfoDialog(
+                              recipe: recipe,
+                              isRecipe: true,
+                            ),
+                          );
                           print('Edit selected');
                         } else if (value == 'delete') {
                           ref
@@ -174,10 +183,11 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
                         const PopupMenuItem(
                           value: 'edit',
                           child: Row(
-                            children: const [
-                              Icon(Icons.edit, color: AppColors.mainColor),
-                              SizedBox(width: 8),
-                              Text('Edit'),
+                            children: [
+                              const Icon(Icons.edit,
+                                  color: AppColors.mainColor),
+                              const SizedBox(width: 8),
+                              const Text('Edit'),
                             ],
                           ),
                         ),

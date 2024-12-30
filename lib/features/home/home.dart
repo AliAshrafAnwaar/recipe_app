@@ -133,7 +133,7 @@ class _HomeState extends ConsumerState<Home> {
             ],
           ),
         ),
-        Divider(
+        const Divider(
           color: AppColors.mainColor,
           height: 0,
         ),

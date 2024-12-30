@@ -13,7 +13,6 @@ class RecipeProvider extends _$RecipeProvider {
   @override
   Set<RecipeModel>? build() {
     getRecipes();
-    ref.keepAlive();
     return {};
   }
 
@@ -59,9 +58,10 @@ class RecipeProvider extends _$RecipeProvider {
         userDisLike: userDisLikeID,
         favouriteRecipeID: favouriteRecipeID,
         unFavouriteRecipeID: unfavouriteRecipeID);
-    await ref
-        .read(userProviderProvider.notifier)
-        .sharedPreferenceLogin(signedUser);
+    await ref.read(userProviderProvider.notifier).sharedPreferenceLogin(
+        signedUser,
+        isFav: (unfavouriteRecipeID != null) ? true : null);
+
     await getRecipes();
   }
 }

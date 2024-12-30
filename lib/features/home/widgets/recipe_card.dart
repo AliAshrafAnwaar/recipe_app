@@ -58,7 +58,7 @@ class _RecipeCardState extends ConsumerState<RecipeCard>
   }
 
   @override
-  bool get wantKeepAlive => true; // Ensure the state is kept alive
+  bool get wantKeepAlive => false; // Ensure the state is kept alive
 }
 
 Widget card(BuildContext context, RecipeModel recipe, UserModel user,
@@ -75,7 +75,8 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
   return Card(
     color: AppColors.secondaryText,
     shadowColor: AppColors.mainColor.withOpacity(0.5),
-    shape: const RoundedRectangleBorder(),
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15))),
     elevation: 5,
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -274,20 +275,26 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               UserActionButton(
-                  onSelected: () {
-                    ref.read(recipeProviderProvider.notifier).updateRecipe(
-                        signedUser: ref.watch(userProviderProvider)!.userID,
-                        recipeID: recipe.recipeID,
-                        userLikeID: ref.watch(userProviderProvider)!.userID);
+                  onSelected: () async {
+                    await ref
+                        .read(recipeProviderProvider.notifier)
+                        .updateRecipe(
+                            signedUser: ref.watch(userProviderProvider)!.userID,
+                            recipeID: recipe.recipeID,
+                            userLikeID:
+                                ref.watch(userProviderProvider)!.userID);
                     if (signeduserFavourites == true) {
                       ref.invalidate(recipeProviderProvider);
                     }
                   },
-                  onUnSelected: () {
-                    ref.read(recipeProviderProvider.notifier).updateRecipe(
-                        signedUser: ref.watch(userProviderProvider)!.userID,
-                        recipeID: recipe.recipeID,
-                        userDisLikeID: ref.watch(userProviderProvider)!.userID);
+                  onUnSelected: () async {
+                    await ref
+                        .read(recipeProviderProvider.notifier)
+                        .updateRecipe(
+                            signedUser: ref.watch(userProviderProvider)!.userID,
+                            recipeID: recipe.recipeID,
+                            userDisLikeID:
+                                ref.watch(userProviderProvider)!.userID);
                     if (signeduserFavourites == true) {
                       ref.invalidate(recipeProviderProvider);
                     }
@@ -308,22 +315,22 @@ Widget card(BuildContext context, RecipeModel recipe, UserModel user,
               // const SizedBox(height: 10, child: VerticalDivider()),
               UserActionButton(
                   onSelected: () async {
-                    ref.read(recipeProviderProvider.notifier).updateRecipe(
-                        recipeID: recipe.recipeID,
-                        signedUser: ref.watch(userProviderProvider)!.userID,
-                        favouriteRecipeID: recipe.recipeID);
-                    if (signeduserFavourites == true) {
-                      ref.invalidate(recipeProviderProvider);
-                    }
+                    await ref
+                        .read(recipeProviderProvider.notifier)
+                        .updateRecipe(
+                            recipeID: recipe.recipeID,
+                            signedUser: ref.watch(userProviderProvider)!.userID,
+                            favouriteRecipeID: recipe.recipeID);
+                    // if (signeduserFavourites == true) {
+                    //   print('aslkdjflkasjdfasdfasdffasdf');
+                    //   ref.invalidate(recipeProviderProvider);
+                    // }
                   },
-                  onUnSelected: () {
+                  onUnSelected: () async {
                     ref.read(recipeProviderProvider.notifier).updateRecipe(
                         recipeID: recipe.recipeID,
                         signedUser: ref.watch(userProviderProvider)!.userID,
                         unfavouriteRecipeID: recipe.recipeID);
-                    if (signeduserFavourites == true) {
-                      ref.invalidate(recipeProviderProvider);
-                    }
                   },
                   isSelected: ref
                       .watch(userProviderProvider)!

@@ -49,6 +49,7 @@ class _HomeState extends ConsumerState<Home> {
         }
 
         final recipes = ref.watch(recipeProviderProvider)!.toList();
+        final nullCheck = ref.watch(recipeProviderProvider);
         recipes.sort((a, b) => b.date.compareTo(a.date));
 
         return Container(
@@ -67,13 +68,13 @@ class _HomeState extends ConsumerState<Home> {
                     ),
                     Flexible(
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1000),
+                        constraints: const BoxConstraints(maxWidth: 650),
                         child: RefreshIndicator(
                           color: AppColors.mainColor,
                           onRefresh: () async {
                             ref.invalidate(recipeProviderProvider);
                           },
-                          child: (ref.watch(recipeProviderProvider) == null)
+                          child: (nullCheck == null)
                               ? const Center(
                                   child: CircularProgressIndicator(
                                     color: AppColors.mainColor,

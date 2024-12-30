@@ -82,8 +82,11 @@ class UserProvider extends _$UserProvider {
     return await repo.getUser(userID);
   }
 
-  Future<bool> sharedPreferenceLogin(String userID) async {
+  Future<bool> sharedPreferenceLogin(String userID, {bool? isFav}) async {
     state = await getUser(userID);
+    if (isFav == true) {
+      ref.invalidate(recipeProviderProvider);
+    }
     return true;
   }
 
